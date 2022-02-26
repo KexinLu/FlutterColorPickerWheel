@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wheel_colorpicker/models/fan_piece.dart';
 import 'package:wheel_colorpicker/widgets/fan_piece_widget.dart';

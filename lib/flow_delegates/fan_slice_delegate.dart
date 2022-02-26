@@ -1,18 +1,22 @@
 import 'package:flutter/animation.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:flutter/rendering.dart';
+import 'package:wheel_colorpicker/models/animation_config.dart';
 
 /// {@template fan_slice_delegate}
 /// {@endtemplate}
 class FanSliceDelegate extends FlowDelegate {
   /// scale animation from 0 to 1
-  final Animation scaleAnimation;
+  final Animation<double> scaleAnimation;
 
   /// opacity animation from 0 to 1
-  final Animation opacityAnimation;
+  final Animation<double> opacityAnimation;
 
   /// distance animation from -TotalHeight/2 to innerRadius
   final Animation<double> distanceAnimation;
+
+  /// rotation animation
+  final Animation<double> rotationAnimation;
 
   /// center of wheel
   final Offset center;
@@ -23,9 +27,14 @@ class FanSliceDelegate extends FlowDelegate {
   /// radius of the inner boundary
   final double radius;
 
+  /// Animation config, see [FanAnimationConfig]
+  final FanAnimationConfig animationConfig;
+
   /// {@macro fan_slice_delegate}
   FanSliceDelegate({
+    required this.animationConfig,
     required this.scaleAnimation,
+    required this.rotationAnimation,
     required this.opacityAnimation,
     required this.distanceAnimation,
     required this.angle,
@@ -39,17 +48,20 @@ class FanSliceDelegate extends FlowDelegate {
     for (int i = context.childCount - 1; i >= 0; i--) {
       context.paintChild(
           i,
-          ///opacity: opacityAnimation.value,
+          opacity: opacityAnimation.value,
           /// transform the child element
-          transform: Matrix4Transform().scale(
+          transform: Matrix4Transform().rotate(
+            rotationAnimation.value,
+            origin: center,
+          ).scale(
             scaleAnimation.value,
-            origin:center,
-          ).direction(
-            /// angle of the transformation
-              angle,
-              /// distance from center
-              distanceAnimation.value
-          ).matrix4
+           origin:center,
+         ).direction(
+           /// angle of the transformation
+             angle,
+             /// distance from center
+             distanceAnimation.value
+         ).matrix4
       );
     }
   }
@@ -60,6 +72,7 @@ class FanSliceDelegate extends FlowDelegate {
     return scaleAnimation != oldDelegate.scaleAnimation
         || opacityAnimation != oldDelegate.opacityAnimation
         || distanceAnimation != oldDelegate.distanceAnimation
+        || rotationAnimation != oldDelegate.rotationAnimation
     ;
   }
 }

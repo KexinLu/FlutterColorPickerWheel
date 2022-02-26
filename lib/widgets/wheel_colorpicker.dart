@@ -1,12 +1,25 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:wheel_colorpicker/flow_delegates/flow_delegates.dart';
+import 'package:wheel_colorpicker/models/animation_config.dart';
 import 'package:wheel_colorpicker/models/fan_piece.dart';
 import 'package:wheel_colorpicker/models/fan_slice.dart';
 import 'package:wheel_colorpicker/utils/math_util.dart';
 import 'package:wheel_colorpicker/wheel_colorpicker.dart';
-import 'package:wheel_colorpicker/available_colors.dart';
-import 'fan_slice_widget.dart';
+
+extension GlobalKeyEx on GlobalKey {
+  Offset get globalTopLeft {
+    final RenderBox box = currentContext?.findRenderObject() as RenderBox;
+    final Size size = box.size;
+    return box.localToGlobal(
+      size.topLeft(Offset.zero)
+    );
+  }
+  Size get size {
+    final RenderBox box = currentContext?.findRenderObject() as RenderBox;
+    return box.size;
+  }
+}
 
 /// {@template wheel_color_picker}
 /// A button which you can click to pop out an overlay containing a wheel
@@ -20,14 +33,11 @@ class WheelColorPicker extends StatefulWidget {
   /// inner radius of the wheel
   final double innerRadius;
 
-  /// color picking button's radius
-  final double buttonRadius;
+  /// color picking button's size
+  final double buttonSize;
 
   /// height of each fan piece
   final double pieceHeight;
-
-  /// how long does it take for the fan to fully expand
-  final int animationDuration;
 
   /// default button color
   final Color defaultColor;
@@ -35,15 +45,20 @@ class WheelColorPicker extends StatefulWidget {
   /// count of FanPieces in the tallest slice
   final int maxItemCount;
 
+  final FanAnimationConfig animationConfig;
+
+  final void Function(Color) onSelect;
+
   /// {@macro wheel_color_picker}
   const WheelColorPicker({
     Key? key,
+    this.animationConfig = const FanAnimationConfig.defaultConfig(),
+    required this.onSelect,
     required this.defaultColor,
-    required this.animationDuration,
     required this.innerRadius,
     required this.maxItemCount,
     required this.pieceHeight,
-    required this.buttonRadius,
+    required this.buttonSize,
     this.colors = defaultAvailableColors,
   }) :
   /// at least one of colors or fanSliceList should be provided
@@ -59,6 +74,8 @@ class WheelColorPicker extends StatefulWidget {
 
 /// {@macro wheel_color_picker}
 class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderStateMixin {
+  final _key = GlobalKey<WheelColorPickerState>();
+
   /// animation controller controlling opening animation
   late AnimationController controller;
 
@@ -66,7 +83,8 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   late Offset center;
 
   /// rotation animation, other animations are handled individually by each slice
-  /// see [FanSliceWidget]
+  /// rotation is cancelled for now
+  /// also see [FanSliceWidget]
   late Animation<double> animation;
 
   /// current color of the button
@@ -75,12 +93,11 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   /// List of fan pieces generated on initialization with respect to colors
   List<FanSlice> fanSliceList = [];
 
-  /// overlay entry (the wheel)
-  late OverlayEntry overlayEntry;
-
-  OverlayState? overlayState;
+  late Widget overlayContent;
 
   late double maxRadius;
+
+  OverlayEntry? overlayEntry;
 
   /// angle offset value notifier, initialized with 0 rotation
   /// when user pan on the wheel, rotate the wheel with angle
@@ -93,7 +110,7 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   }
 
   /// initialize the list of fan items
-  void initFanSliceList() {
+  void _initFanSliceList() {
     /// calculate the swipe of each slice by dividing 360(2pi) by slice count
     final double swipe = 2 * pi / widget.colors.length;
 
@@ -124,31 +141,32 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   @override
   void initState() {
     super.initState();
-    /// center needs to be established before
+    /// center needs to be established when initializing state
+    /// center is with respect to the overlay container, not the parent container
     maxRadius = widget.innerRadius + widget.maxItemCount * widget.pieceHeight;
-    center = Offset(
-      maxRadius,
-      maxRadius,
-    );
-    color = widget.defaultColor;
-    initFanSliceList();
+    center  = Offset(maxRadius, maxRadius);
 
+    /// populate fan slices (with respect to list of colors)
+    _initFanSliceList();
+
+    color = widget.defaultColor;
+    /// we can only build the fan pieces after the main button is built.
+    /// Reason being we need the button's center Offset(global)
+    WidgetsBinding.instance?.addPostFrameCallback(
+            (_) => postBuild()
+    );
 
     /// create the animation controller for all animation
     /// this widget only uses one animation controller
     controller = AnimationController(
-      duration: Duration(milliseconds: widget.animationDuration),
+      duration: Duration(milliseconds: widget.animationConfig.animationDurationInMillisecond),
       vsync: this,
     );
 
-    /// this is for a slight rotation when expanding the wheel
-    var tween = Tween<double>(begin: pi, end: 0);
-    animation = tween.animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.ease,
-      ),
-    );
+    /// --this is for a slight rotation when expanding the wheel--
+    /// !rotation is cancelled for now;
+    Tween<double> tween = ConstantTween(0);
+    animation = tween.animate(controller);
   }
 
   /// [FanPieceWidget] onClick will call this function
@@ -158,6 +176,8 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
       color = fanPiece.color;
     });
 
+    widget.onSelect(fanPiece.color);
+
     /// closing animation
     controller.reverse();
 
@@ -165,80 +185,108 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
     _hideOverlay();
   }
 
-  OverlayEntry genEntry(BuildContext context) {
-    return OverlayEntry(builder: (context) {
-      return Positioned(
-          left: MediaQuery.of(context).size.width * 0.5 - maxRadius,
-          top:  MediaQuery.of(context).size.height * 0.5 - maxRadius + widget.buttonRadius/2,
-          child: GestureDetector(
-              onPanUpdate: (d) {
-                final newR = MathUtil.getRadians(center: center, point: d.localPosition);
-                final oldR = MathUtil.getRadians(center: center, point: Offset( d.localPosition.dx - d.delta.dx,d.localPosition.dy - d.delta.dy));
-                increaseAngleOffset(oldR - newR);
-              },
-              behavior: HitTestBehavior.translucent,
-              child: ValueListenableBuilder(
-                  valueListenable: angleOffsetNotifier,
-                  builder: (context, value, child) {
-                    return Transform.rotate(
-                        angle: angleOffsetNotifier.value,
-                        child: SizedBox(
-                            width: maxRadius * 2,
-                            height: maxRadius * 2,
-                            child: Flow(
-                                delegate: FanFlowDelegation(center: center, animation: animation),
-                                children: [
-                                  ...fanSliceList.map((e) => FanSliceWidget(
-                                    callback: callback,
-                                    fanSlice: e,
-                                    controller: controller,
-                                  ))
-                                ]
-                            )
-                        )
-                    );
-                  }
-              )
-          ));
-    });
+  void postBuild() {
+    _genEntryContent();
+  }
+
+  void _genEntryContent() {
+    final Offset topLeft = GlobalKeyEx(_key).globalTopLeft;
+
+    overlayContent = Positioned(
+        top: topLeft.dy - maxRadius + widget.buttonSize/2,
+        left: topLeft.dx - maxRadius + widget.buttonSize/2,
+        child: GestureDetector(
+            onPanUpdate: (d) {
+              final newR = MathUtil.getRadians(center: center, point: d.localPosition);
+              final oldR = MathUtil.getRadians(
+                  center: center,
+                  point: Offset( d.localPosition.dx - d.delta.dx,d.localPosition.dy - d.delta.dy));
+              increaseAngleOffset(oldR - newR);
+            },
+            onTap: () {
+              _hideOverlay();
+            },
+            behavior: HitTestBehavior.translucent,
+            child: ValueListenableBuilder(
+                valueListenable: angleOffsetNotifier,
+                builder: (context, value, child) {
+                  return Transform.rotate(
+                      angle: angleOffsetNotifier.value,
+                      child: SizedBox(
+                          width: maxRadius * 2,
+                          height: maxRadius * 2,
+                          child: RepaintBoundary(
+                              child: Flow(
+                                  delegate: FanFlowDelegation(
+                                      center: center,
+                                      animation: animation
+                                  ),
+                                  children: [
+                                    ...fanSliceList.map(
+                                            (e) => FanSliceWidget(
+                                          fanAnimationConfig: widget.animationConfig,
+                                          callback: callback,
+                                          fanSlice: e,
+                                          controller: controller,
+                                        )
+                                    )
+                                  ]
+                              )
+                          )
+                      )
+                  );
+                }
+            )
+        )
+    );
   }
 
   void _hideOverlay() async {
-    if (overlayEntry != null) {
-      Future.delayed(Duration(milliseconds: widget.animationDuration)).then((_) {
-        try {
-          overlayEntry.remove();
-        } catch(_) {}
+      Future.delayed(Duration(milliseconds: widget.animationConfig.animationDurationInMillisecond)).then((_) {
+          if (overlayEntry != null) {
+            overlayEntry!.remove();
+            overlayEntry = null;
+          }
       });
-    }
   }
 
   void _showOverlay(BuildContext context) async {
-    overlayState = Overlay.of(context);
-    overlayEntry = genEntry(context);
-    overlayState!.insert(overlayEntry);
-    controller.forward();
+    if (overlayEntry == null) {
+      final OverlayState? overlayState = Overlay.of(context);
+      overlayEntry = OverlayEntry(builder: (_) => overlayContent);
+      overlayState!.insert(overlayEntry!);
+      controller.forward();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-        width: 2*widget.buttonRadius,
-        height: 2*widget.buttonRadius,
-        duration: const Duration(seconds: 2),
-        curve: Curves.easeIn,
-        child: Material(
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-            color: color,
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              focusColor: color,
-              onLongPress: () {
-                _showOverlay(context);
-              },
-              onTap: () {
-                ///overlayEntry!.remove();
-              },
+    return Align(
+        alignment: Alignment.center,
+        child: RepaintBoundary(
+            child: AnimatedContainer(
+                key: _key,
+                width: widget.buttonSize,
+                height: widget.buttonSize,
+                duration: const Duration(seconds: 2),
+                curve: Curves.easeIn,
+                child: Material(
+                    shape: const CircleBorder(),
+                    color: color,
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      focusColor: color,
+                      onLongPress: () {
+                        _showOverlay(context);
+                      },
+                      onTap: () {
+                        if (overlayEntry != null) {
+                          overlayEntry!.remove();
+                          overlayEntry = null;
+                        }
+                      },
+                    )
+                )
             )
         )
     );

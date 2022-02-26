@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
+import 'package:wheel_colorpicker/models/animation_config.dart';
 import 'package:wheel_colorpicker/models/fan_piece.dart';
 import 'package:wheel_colorpicker/models/fan_slice.dart';
 import 'package:wheel_colorpicker/utils/math_util.dart';
@@ -39,9 +42,13 @@ class FanSliceWidget extends StatefulWidget {
   /// for 40% of the animation duration.
   final double finishDelayWeight;
 
+  /// animation config used by FanSliceDelegate
+  final FanAnimationConfig fanAnimationConfig;
+
   /// {@macro fan_slice_widget}
   const FanSliceWidget({
     Key? key,
+    required this.fanAnimationConfig,
     required this.callback,
     required this.fanSlice,
     required this.controller,
@@ -69,6 +76,9 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
   /// scale Animation from 0 to 1 with some distribution curve
   late Animation<double> scaleAnimation;
 
+  /// rotation Animation
+  late Animation<double> rotationAnimation;
+
   /// opacity Animation from 0 to 1 with some distribution curve
   late Animation<double> opacityAnimation;
 
@@ -78,100 +88,201 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
   @override
   void initState() {
     super.initState();
-    /// ![initAnimation] should only be called after initFanPieceList is finished
     initAnimations();
   }
 
   /// initialize all animations used by [FanSliceDelegate]
   void initAnimations() {
-    initScaleAnimation();
-    initOpacityAnimation();
-    initDistanceAnimation();
+    final FanAnimationConfig config = widget.fanAnimationConfig;
+
+    initScaleAnimation(config.scaleAnimationConfig);
+    initRotationAnimation(config.rotationAnimationConfig);
+    initOpacityAnimation(config.opacityAnimationConfig);
+    initDistanceAnimation(config.rayAnimationConfig);
   }
 
   /// initialize the scale animation of current slice
-  void initScaleAnimation() {
-    scaleAnimation = TweenSequence<double>(
-            [
-              /// stay 0 for 20% of the animation duration, this creates
-              /// the popout effect when opening
-              /// and the shrinking effect when closing
-              TweenSequenceItem(tween: ConstantTween(0), weight: 0.8),
+  void initScaleAnimation(ScaleAnimationConfig config) {
+    if (!config.enabled) {
+      scaleAnimation = ConstantTween<double>(1).animate(widget.controller);
+      return;
+    }
 
-              /// scale up takes up 20% of the animation duration
-              TweenSequenceItem(tween: Tween(begin: 0, end: 1), weight: 0.2),
+    List<TweenSequenceItem<double>> sequenceItemList = [];
+    if (config.animationStartDelay > 0) {
+      sequenceItemList.add(
+          TweenSequenceItem(
+              tween: ConstantTween(0),
+              weight: config.animationStartDelay
+          )
+      );
+    }
 
-              /// scale will stay at 1 for 60% of the animation duration
-              TweenSequenceItem(tween: ConstantTween(1), weight: 0.6),
-            ]
-        ).animate(
-          widget.controller
-        );
+    sequenceItemList.add(
+      TweenSequenceItem(tween: Tween(begin: 0, end: 1), weight: 1 - config.animationFinishDelay - config.animationStartDelay),
+    );
+
+    if (config.animationFinishDelay > 0) {
+      sequenceItemList.add(
+          TweenSequenceItem(
+              tween: ConstantTween(1),
+              weight: config.animationFinishDelay
+          )
+      );
+    }
+
+    scaleAnimation = TweenSequence<double>(sequenceItemList).animate(widget.controller);
+  }
+
+  /// initialize the rotation animation of current slice
+  void initRotationAnimation(RotationAnimationConfig config) {
+    if (!config.enabled) {
+      rotationAnimation = ConstantTween<double>(0).animate(widget.controller);
+      return;
+    }
+
+    List<TweenSequenceItem<double>> sequenceItemList = [];
+    if (config.animationStartDelay > 0) {
+      sequenceItemList.add(
+        TweenSequenceItem(
+            tween: ConstantTween(
+              - widget.fanSlice.angleStart - 0.5 * widget.fanSlice.swipe,
+            ),
+            weight: config.animationStartDelay
+        ),
+      );
+    }
+
+    sequenceItemList.add(
+      TweenSequenceItem(
+          tween: Tween(
+              begin: - widget.fanSlice.angleStart - 0.5 * widget.fanSlice.swipe,
+              end: 0
+          ),
+          weight: 1 - config.animationFinishDelay - config.animationStartDelay
+      ),
+    );
+
+    if (config.animationFinishDelay > 0) {
+      sequenceItemList.add(
+          TweenSequenceItem(
+            tween: ConstantTween(0),
+            weight: config.animationFinishDelay,
+          )
+      );
+    }
+
+    rotationAnimation = TweenSequence<double>(sequenceItemList).animate(
+        CurvedAnimation(
+          parent: widget.controller,
+          curve: config.curve,
+        )
+    );
   }
 
   /// initialize the opacity animation of current slice
-  void initOpacityAnimation() {
-    opacityAnimation = TweenSequence<double>(
-        [
-          /// constant delay the increase of opacity to make sure opacity is delayed for 20% of animation duration
-          TweenSequenceItem(tween: ConstantTween(0), weight: 0.2),
-          TweenSequenceItem(
-              tween: Tween(begin: 0, end: 1),
-              /// since we used up 20% in waiting time, we only have 0.8 left
-              weight: 0.8 - widget.finishDelayWeight
+  void initOpacityAnimation(OpacityAnimationConfig config) {
+    if (!config.enabled) {
+      opacityAnimation = ConstantTween<double>(1).animate(widget.controller);
+      return;
+    }
+
+    List<TweenSequenceItem<double>> sequenceItemList = [];
+    if (config.animationStartDelay > 0) {
+      sequenceItemList.add(
+        TweenSequenceItem(tween: Tween(
+            begin: 0,
+            end: 0
+        ), weight: config.animationStartDelay),
+      );
+    }
+
+    sequenceItemList.add(
+      TweenSequenceItem(
+          tween: Tween(
+              begin: 0,
+              end: 1,
           ),
-          ...widget.finishDelayWeight > 0 ? [
-            /// finishDelayWeight makes sure tween stay at 1
-            TweenSequenceItem(tween: ConstantTween(1), weight: widget.finishDelayWeight)
-          ] : [],
-        ]
+          weight: 1 - config.animationFinishDelay - config.animationStartDelay
+      ),
+    );
+
+    if (config.animationFinishDelay > 0) {
+      sequenceItemList.add(
+          TweenSequenceItem(
+            tween: ConstantTween(1),
+            weight: config.animationFinishDelay,
+          )
+      );
+    }
+
+    opacityAnimation = TweenSequence<double>(
+        sequenceItemList
     ).animate(
-      /// add extra curve to the tween by introducing easeInQuad distribution
-        CurvedAnimation(parent: widget.controller, curve: Curves.easeInQuad)
+        CurvedAnimation(
+            parent: widget.controller,
+            curve: config.curve
+        )
     );
   }
 
   /// initialize distance animation
-  void initDistanceAnimation() {
-    double entryDelay = MathUtil.randDouble(0.3);
-    double finishDelay = MathUtil.randDouble(0.3);
-    distanceAnimation = TweenSequence<double>([
-      /// entryDelay will make the item stay at the starting position for a period of time
-     /// ...widget.entryDelayWeight > 0 ? [
-     ///   TweenSequenceItem(
-     ///     /// starting distance
-     ///       tween: ConstantTween(-totalHeight/2),
-     ///       weight: widget.entryDelayWeight
-     ///   )
-     /// ] : [],
-      TweenSequenceItem(
-        /// starting distance
-          tween: ConstantTween(-widget.fanSlice.height),
-          weight: entryDelay,///widget.entryDelayWeight
-      ),
+  void initDistanceAnimation(RayAnimationConfig config) {
+    if (!config.enabled) {
+      distanceAnimation = ConstantTween<double>(0).animate(widget.controller);
+      return;
+    }
 
-      /// actual animation
-      TweenSequenceItem(
-          tween: Tween(begin: -widget.fanSlice.height, end: 0.0),
-          weight: 1 - entryDelay - finishDelay
-              ///widget.entryDelayWeight - widget.finishDelayWeight
-      ),
-      /// last phase where the slice stays in place
-      ///...widget.finishDelayWeight > 0 ? [
-        TweenSequenceItem(tween: ConstantTween(0), weight: finishDelay)///widget.finishDelayWeight)
-      ///] : [],
-    ]).animate(
+    double entryDelay = config.randomizeStartDelay
+        ? MathUtil.randDouble(0.3)
+        : config.animationStartDelay;
+
+    double finishDelay = config.randomizeFinishDelay
+        ? MathUtil.randDouble(0.3)
+        : config.animationFinishDelay;
+
+    List<TweenSequenceItem<double>> sequenceItemList = [];
+
+    if (entryDelay > 0) {
+      sequenceItemList.add(
+          TweenSequenceItem(
+              tween: Tween<double>(
+                begin: -widget.fanSlice.height,
+                end: 0,
+              ),
+              weight: entryDelay
+          )
+      );
+    }
+
+    TweenSequenceItem(
+        tween: Tween(begin: -widget.fanSlice.height, end: 0.0),
+        weight: 1 - entryDelay - finishDelay
+    );
+
+    if (finishDelay > 0) {
+      sequenceItemList.add(
+          TweenSequenceItem(
+              tween: ConstantTween(0),
+              weight: finishDelay
+          )
+      );
+    }
+
+    var curve = config.curve;
+    if (config.randomizeStartDelay) {
+      curve = Interval(
+          MathUtil.randDouble(0.5),
+          1,
+          curve: curve
+      );
+    }
+    distanceAnimation = TweenSequence<double>(
+        sequenceItemList
+    ).animate(
         CurvedAnimation(
             parent: widget.controller,
-            /// curve the animation with a delayed interval, so the
-            /// slices will come in at different rate
-           /// curve:
-            curve:
-           Interval(
-               MathUtil.randDouble(0.5),
-               1,
-            curve: Curves.easeInOutCubic
-           )
+            curve: curve
         )
     );
   }
@@ -181,7 +292,9 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
     return RepaintBoundary(child: Flow(
       /// see [FanSliceDelegate]
         delegate: FanSliceDelegate(
+          animationConfig: widget.fanAnimationConfig,
           angle: widget.fanSlice.angleStart,
+          rotationAnimation: rotationAnimation,
           opacityAnimation: opacityAnimation,
           distanceAnimation: distanceAnimation,
           scaleAnimation: scaleAnimation,
