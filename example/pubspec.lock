@@ -184,7 +184,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-  wheel_colorpicker:
+  wheel_color_picker:
     dependency: "direct main"
     description:
       path: ".."

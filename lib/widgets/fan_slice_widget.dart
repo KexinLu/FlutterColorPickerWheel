@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:wheel_colorpicker/models/animation_config.dart';
-import 'package:wheel_colorpicker/models/fan_piece.dart';
-import 'package:wheel_colorpicker/models/fan_slice.dart';
-import 'package:wheel_colorpicker/utils/math_util.dart';
-import 'package:wheel_colorpicker/widgets/fan_piece_widget.dart';
-import 'package:wheel_colorpicker/flow_delegates/fan_slice_delegate.dart';
+import 'package:wheel_color_picker/models/animation_config.dart';
+import 'package:wheel_color_picker/models/fan_piece.dart';
+import 'package:wheel_color_picker/models/fan_slice.dart';
+import 'package:wheel_color_picker/utils/math_util.dart';
+import 'package:wheel_color_picker/widgets/fan_piece_widget.dart';
+import 'package:wheel_color_picker/flow_delegates/fan_slice_delegate.dart';
 
 /// {@template fan_slice_widget}
 /// FanSliceWidget is responsible to render a slice of the wheel, just like a

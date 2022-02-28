@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wheel_colorpicker/wheel_colorpicker.dart';
+import 'package:wheel_color_picker/wheel_color_picker.dart';
 
 void main() {
   ///debugRepaintRainbowEnabled = true;
@@ -23,7 +23,7 @@ class WheelColorPickerDemoState extends State<WheelColorPickerDemo> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Wheel Colorpicker Demo'),
+            title: const Text('Wheel Color Picker Demo'),
           ),
           body: Container(
               width: double.infinity,
@@ -37,7 +37,8 @@ class WheelColorPickerDemoState extends State<WheelColorPickerDemo> {
                             width: 800,
                             height: 800,
                             color: Colors.grey[300],
-                            child: WheelColorPicker(
+                            child:
+                            WheelColorPicker(
                               onSelect: (Color color) {
                                 print(color.toString());
                               },

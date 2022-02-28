@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wheel_colorpicker/models/fan_piece.dart';
+import 'package:wheel_color_picker/models/fan_piece.dart';
 
 
 void main() {

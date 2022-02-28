@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:wheel_colorpicker/models/fan_piece.dart';
-import 'package:wheel_colorpicker/painters/fan_piece_painter.dart';
+import 'package:wheel_color_picker/models/fan_piece.dart';
+import 'package:wheel_color_picker/painters/fan_piece_painter.dart';
 
 /// {@template fan_piece_widget}
 /// smallest widget unit in this library, a piece of the wheel

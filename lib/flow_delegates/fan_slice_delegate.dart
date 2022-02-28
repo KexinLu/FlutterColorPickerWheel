@@ -1,7 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:flutter/rendering.dart';
-import 'package:wheel_colorpicker/models/animation_config.dart';
+import 'package:wheel_color_picker/models/animation_config.dart';
 
 /// {@template fan_slice_delegate}
 /// {@endtemplate}

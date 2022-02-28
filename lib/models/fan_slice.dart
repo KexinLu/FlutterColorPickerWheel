@@ -1,7 +1,4 @@
-import 'dart:math';
 import 'dart:ui';
-
-import 'package:wheel_colorpicker/wheel_colorpicker.dart';
 
 import 'fan_piece.dart';
 
@@ -29,13 +26,25 @@ class FanSlice {
   /// Fan Piece height
   final double pieceHeight ;
 
+  /// list of fanPieces held by this fan slice
+  final List<FanPiece> _fanPieceList = [];
 
-  /// list of fanPieces;
-  List<FanPiece> fanPieceList = [];
+  /// getter of _fanPieceList, private to protect it from alteration
+  List<FanPiece> get fanPieceList => _fanPieceList;
 
-  double currentStartRadius;
+  /// radius start of the last piece, default to innerRadius of this fan slice
+  double _startRadiusOfLastPiece;
+  /// getter, for testing
+  double get startRadiusOfLastPiece => _startRadiusOfLastPiece;
 
-  double height = 0;
+  /// current outer radius of this slice
+  double get outerRadius => innerRadius + _height;
+
+  /// height of this slice, for now it is piece_count * piece_height
+  double _height = 0;
+
+  /// getter of height, height is private to protect it from alteration from outside
+  double get height => _height;
 
   /// {@macro fan_slice}
   FanSlice({
@@ -44,22 +53,22 @@ class FanSlice {
     required this.swipe,
     required this.innerRadius,
     required this.center,
-  }) : currentStartRadius = innerRadius;
+  }) : _startRadiusOfLastPiece = innerRadius;
 
   void addFanPiece(Color color) {
-    double outer = currentStartRadius + pieceHeight;
-    fanPieceList.add(
+    double outer = _startRadiusOfLastPiece + pieceHeight;
+    _fanPieceList.add(
         FanPiece(
             startAngle: angleStart,
             swipe: swipe,
-            innerRadius: currentStartRadius,
+            innerRadius: _startRadiusOfLastPiece,
             outerRadius: outer,
             color: color,
             center: center
         )
     );
-    height += pieceHeight;
-    currentStartRadius = outer;
+    _height += pieceHeight;
+    _startRadiusOfLastPiece = outer;
   }
 }
 

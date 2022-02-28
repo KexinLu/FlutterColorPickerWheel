@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wheel_colorpicker/models/animation_config.dart';
+import 'package:wheel_color_picker/models/animation_config.dart';
 
 const FanAnimationConfig fanLikeAnimationConfig = FanAnimationConfig(
   animationDurationInMillisecond: 1200,

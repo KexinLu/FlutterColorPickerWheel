@@ -1,7 +1,6 @@
-import 'package:flutter/animation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:wheel_colorpicker/flow_delegates/fan_delegate.dart';
-import 'package:wheel_colorpicker/flow_delegates/fan_slice_delegate.dart';
+import 'package:wheel_color_picker/flow_delegates/fan_delegate.dart';
+import 'package:wheel_color_picker/flow_delegates/fan_slice_delegate.dart';
 
 /// {@category Models}
 /// {@template animation_config}
@@ -16,30 +15,22 @@ class FanAnimationConfig {
   final int animationDurationInMillisecond;
 
   const FanAnimationConfig({
-    this.rayAnimationConfig = const RayAnimationConfig.defaultConfig(),
-    this.rotationAnimationConfig = const RotationAnimationConfig.defaultConfig(),
-    this.opacityAnimationConfig = const OpacityAnimationConfig.defaultConfig(),
-    this.scaleAnimationConfig = const ScaleAnimationConfig.defaultConfig(),
-    this.animationDurationInMillisecond = 1400,
-  });
-
-  const FanAnimationConfig.defaultConfig({
-    this.rayAnimationConfig = const RayAnimationConfig.defaultConfig(),
-    this.rotationAnimationConfig = const RotationAnimationConfig.defaultConfig(),
-    this.opacityAnimationConfig = const OpacityAnimationConfig.defaultConfig(),
-    this.scaleAnimationConfig = const ScaleAnimationConfig.defaultConfig(),
+    this.rayAnimationConfig = const RayAnimationConfig(),
+    this.rotationAnimationConfig = const RotationAnimationConfig(),
+    this.opacityAnimationConfig = const OpacityAnimationConfig(),
+    this.scaleAnimationConfig = const ScaleAnimationConfig(),
     this.animationDurationInMillisecond = 1400,
   });
 }
 
-abstract class AnimationConfig {
+abstract class SubAnimationConfig {
   final Curve curve;
   final bool enabled;
   final double animationStartDelay;
   final double animationFinishDelay;
 
   @required
-  const AnimationConfig({
+  const SubAnimationConfig({
     this.curve = Curves.linear,
     this.enabled = false,
     this.animationStartDelay = 0,
@@ -47,7 +38,7 @@ abstract class AnimationConfig {
   }) : assert(animationStartDelay + animationFinishDelay < 1);
 }
 
-class OpacityAnimationConfig extends AnimationConfig {
+class OpacityAnimationConfig extends SubAnimationConfig {
   const OpacityAnimationConfig({
     Curve curve = Curves.linear,
     bool enabled = false,
@@ -59,10 +50,9 @@ class OpacityAnimationConfig extends AnimationConfig {
     animationStartDelay: animationStartDelay,
     animationFinishDelay: animationFinishDelay,
   );
-  const OpacityAnimationConfig.defaultConfig() : super();
 }
 
-class ScaleAnimationConfig extends AnimationConfig {
+class ScaleAnimationConfig extends SubAnimationConfig {
   const ScaleAnimationConfig({
     Curve curve = Curves.linear,
     bool enabled = false,
@@ -74,10 +64,9 @@ class ScaleAnimationConfig extends AnimationConfig {
     animationStartDelay: animationStartDelay,
     animationFinishDelay: animationFinishDelay,
   );
-  const ScaleAnimationConfig.defaultConfig() : super();
 }
 
-class RotationAnimationConfig extends AnimationConfig {
+class RotationAnimationConfig extends SubAnimationConfig {
   const RotationAnimationConfig({
     Curve curve = Curves.linear,
     bool enabled = false,
@@ -89,16 +78,15 @@ class RotationAnimationConfig extends AnimationConfig {
     animationStartDelay: animationStartDelay,
     animationFinishDelay: animationFinishDelay,
   );
-  const RotationAnimationConfig.defaultConfig() : super();
 }
 
-class RayAnimationConfig extends AnimationConfig {
+class RayAnimationConfig extends SubAnimationConfig {
   final bool randomizeStartDelay;
   final bool randomizeFinishDelay;
 
   const RayAnimationConfig({
-    this.randomizeStartDelay = false,
-    this.randomizeFinishDelay = false,
+    this.randomizeStartDelay = true,
+    this.randomizeFinishDelay = true,
     Curve curve = Curves.linear,
     bool enabled = false,
     double animationStartDelay = 0,
@@ -109,10 +97,4 @@ class RayAnimationConfig extends AnimationConfig {
     animationStartDelay: animationStartDelay,
     animationFinishDelay: animationFinishDelay,
   );
-
-  const RayAnimationConfig.defaultConfig() :
-        randomizeStartDelay=true,
-        randomizeFinishDelay= true,
-        super();
-
 }
