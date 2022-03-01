@@ -7,7 +7,13 @@ import 'package:wheel_color_picker/models/fan_slice.dart';
 import 'package:wheel_color_picker/utils/math_util.dart';
 import 'package:wheel_color_picker/wheel_color_picker.dart';
 
+/// {@template global_key_ex}
+///      [GlobalKeyEx] is an extension on GlobalKey
+///      One can call the methods in this extension by:
+///          final Offset topLeft = GlobalKeyEx(_key).globalTopLeft;
+/// {@endtemplate}
 extension GlobalKeyEx on GlobalKey {
+  ///  it enables the getter of globalTopLeft of the widget which has this key attached to
   Offset get globalTopLeft {
     final RenderBox box = currentContext?.findRenderObject() as RenderBox;
     final Size size = box.size;
@@ -15,28 +21,29 @@ extension GlobalKeyEx on GlobalKey {
       size.topLeft(Offset.zero)
     );
   }
-  Size get size {
-    final RenderBox box = currentContext?.findRenderObject() as RenderBox;
-    return box.size;
-  }
 }
 
 /// {@template wheel_color_picker}
-/// A button which you can click to pop out an overlay containing a wheel
-/// of color pieces.
+///     A button which you can click to pop out an overlay containing a wheel
+///     of color pieces.
 /// {@endtemplate}
 class WheelColorPicker extends StatefulWidget {
   /// List of slice of colors you want to show
   /// The inner list represents a slice of colors
   final List<List<Color>> colors;
 
+  /// when considering this wheel as a donut shaped widget,
   /// inner radius of the wheel
   final double innerRadius;
 
   /// color picking button's size
   final double buttonSize;
 
-  /// height of each fan piece
+  /// Imagine the wheel as a donut shaped cake,
+  /// One can cut it into multiple slices,
+  /// Then, if we cut one slice into equal height pieces, each piece would share
+  /// the same height.
+  /// Height of each fan piece
   final double pieceHeight;
 
   /// default button color
@@ -61,9 +68,6 @@ class WheelColorPicker extends StatefulWidget {
     required this.buttonSize,
     this.colors = defaultAvailableColors,
   }) :
-  /// at least one of colors or fanSliceList should be provided
-  /// providing fanSliceList would result in better performance
-  /// since initState no-longer have to generate all the fanPieces on the fly
         super(key: key);
 
   @override
@@ -76,7 +80,9 @@ class WheelColorPicker extends StatefulWidget {
 class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderStateMixin {
   final _key = GlobalKey<WheelColorPickerState>();
 
-  /// animation controller controlling opening animation
+  /// Animation controller of the the component,
+  /// it's responsible to trigger animations in [FanFlowDelegation]
+  /// and [FanSliceDelegate].
   late AnimationController controller;
 
   /// center of this wheel
