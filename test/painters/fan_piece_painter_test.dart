@@ -1,54 +1,58 @@
 import 'dart:math';
+import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wheel_color_picker/models/fan_piece.dart';
 import 'package:wheel_color_picker/painters/fan_piece_painter.dart';
 
-void main() {
-  testWidgets("Testing FanPiecePainter rendering", (WidgetTester tester) async {
-    final GlobalKey target = GlobalKey();
-    await tester.pumpWidget(
-        Container(
-            height: 800,
-            width: 500,
-            decoration: BoxDecoration(
-                border: Border.all(width: 2)
-            ),
-            child: Center(
-                child: CustomPaint(
-                  key: target,
-                  painter: FanPiecePainter(
-                    fanPiece: FanPiece(
-                      startAngle: pi,
-                      swipe: 0.2 * pi,
-                      outerRadius: 200,
-                      innerRadius: 100,
-                      color: Colors.red,
-                      center: const Offset(50,50),
-                    ),
-                  ),
-                )
-            )
-        )
-    );
-
-    await expectLater(find.byKey(target).first, matchesGoldenFile('fan_piece_painter.png'));
-
+class TestCase {
+  final FanPiece fanPiece;
+  final int caseNumber;
+  TestCase({
+    required this.fanPiece,
+    required this.caseNumber,
   });
+}
 
-  /// This test is skipped for now.
-  ///  expect(renderCustomPaint.hitTestSelf(const Offset(100, 255)), true); is not returning correct result
-  ///  renderCustomPaint.hitTestSelf is invoking painter.hitTest properly and is
-  ///  deferring the hit test to path.contains where the path is filled and closed
-  ///  In action this works, but in test it not working
-  ///  Since the hitTest of Path is handled by Native handler
-  ///  My guess is Native Path handler of WidgetTest is not handling path.contains properly
-  ///  TODO: verify this theory
+class TestPainter extends CustomPainter{
+  final Offset point;
+  TestPainter({required this.point});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawPoints(PointMode.points, [point], Paint()..color=Colors.white..strokeWidth=5);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+void main() {
+  final TargetPlatformVariant platformVariant = TargetPlatformVariant.all();
+  final ValueVariant<TestCase> fanPieceVariant = ValueVariant<TestCase>(
+    <TestCase>{
+      TestCase(
+          fanPiece: FanPiece(angleStart: 0, swipe: 0.3*pi, radiusEnd: 80, radiusStart: 60, color: Colors.red, center: const Offset(155,155)),
+          caseNumber: 1,
+      ),
+      TestCase(
+        fanPiece: FanPiece(angleStart: pi, swipe: 0.2*pi, radiusEnd: 90, radiusStart: 70, color: Colors.green, center: const Offset(255,255)),
+        caseNumber: 2,
+      ),
+      TestCase(
+        fanPiece: FanPiece(angleStart: 2 * pi, swipe: 0.5*pi, radiusEnd: 180, radiusStart: 140, color: Colors.yellow, center: const Offset(125,125)),
+        caseNumber: 3,
+      )
+    }
+  );
+
   testWidgets(
-      "Testing FanPiecePainter hitTest",
+      "Testing FanPiecePainter rendering",
           (WidgetTester tester) async {
         final GlobalKey target = GlobalKey();
         await tester.pumpWidget(
@@ -62,38 +66,51 @@ void main() {
                     child: CustomPaint(
                       key: target,
                       painter: FanPiecePainter(
-                        fanPiece: FanPiece(
-                          startAngle: pi,
-                          swipe: 0.2 * pi,
-                          outerRadius: 200,
-                          innerRadius: 100,
-                          color: Colors.red,
-                          center: const Offset(50,50),
-                        ),
+                        fanPiece: fanPieceVariant.currentValue!.fanPiece,
                       ),
                     )
                 )
             )
         );
-
-        RenderCustomPaint renderCustomPaint = target.currentContext!.findRenderObject() as RenderCustomPaint;
-        /// Offset(180.0, 280.0) innerArcStart
-        /// Offset(199.1, 221.2) innerArcEnd
-        /// Offset(118.2, 162.4) outerArcEnd
-        /// Offset(80.0, 280.0) outerArcStart
-        /// shape is approximately
-        /**
-         *            (118,162)
-         *               .
-         *            .      .
-         *          .            . (199,221)
-         *        .            .
-         *       .           .
-         *      .  .  .  .  .
-         * (80,280)   (180,280)
-         **/
-        expect(renderCustomPaint.hitTestSelf(const Offset(100, 255)), true);
+        await expectLater(find.byKey(target).first, matchesGoldenFile('fan_piece_painter_${fanPieceVariant.currentValue!.caseNumber}.png'));
       },
-      skip: true
-  ) ;
+      variant: fanPieceVariant
+  );
+
+  testWidgets(
+    "Testing FanPiecePainter hitTest",
+        (WidgetTester tester) async {
+      final GlobalKey target = GlobalKey();
+      await tester.pumpWidget(
+
+          Container(
+              height: 1000,
+              width: 1000,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 2)
+              ),
+              child: Center(
+                  child: CustomPaint(
+                    key: target,
+                    foregroundPainter: TestPainter(
+                        point: const Offset(200,200)
+                    ),
+                    painter: FanPiecePainter(
+                      fanPiece: FanPiece(angleStart: 0, swipe: 0.3*pi, radiusEnd: 80, radiusStart: 60, color: Colors.red, center: const Offset(155,155)),
+                    ),
+                  )
+              )
+          )
+      );
+
+      await expectLater(
+          find.byKey(target).first,
+          matchesGoldenFile('fan_piece_painter_hitTest_${debugDefaultTargetPlatformOverride.toString()}.png')
+      );
+
+      RenderCustomPaint renderCustomPaint = target.currentContext!.findRenderObject() as RenderCustomPaint;
+      expect(renderCustomPaint.hitTestSelf(const Offset(200, 200)), true);
+    },
+    variant: platformVariant
+  );
 }

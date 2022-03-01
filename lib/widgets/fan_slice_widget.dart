@@ -292,7 +292,8 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
     return RepaintBoundary(child: Flow(
       /// see [FanSliceDelegate]
         delegate: FanSliceDelegate(
-          animationConfig: widget.fanAnimationConfig,
+          /// removed for now
+          ///animationConfig: widget.fanAnimationConfig,
           angle: widget.fanSlice.angleStart,
           rotationAnimation: rotationAnimation,
           opacityAnimation: opacityAnimation,

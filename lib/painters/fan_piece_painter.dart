@@ -9,10 +9,15 @@ import 'package:wheel_color_picker/widgets/fan_piece_widget.dart';
 /// {@endtemplate}
 class FanPiecePainter extends CustomPainter {
   /// holds the fan piece model
-  final FanPiece fanPiece;
+  final FanPiece _fanPiece;
+  FanPiece get fanPiece => _fanPiece;
 
   /// {@macro fan_piece_painter}
-  FanPiecePainter({required this.fanPiece});
+  FanPiecePainter({
+    required FanPiece fanPiece,
+    }) :
+  _fanPiece = fanPiece;
+
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -37,12 +42,7 @@ class FanPiecePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    /// all the transformation and animation are handled by parent objects
-    /// to optimize the rendering speed, we set the shouldRepaint to false
-    /// If in the future the FanPiece model should become variable
-    /// this should STAY false! And the repaint should be handled by passing in a
-    /// [ValueNotifier]
-    return false;
+  bool shouldRepaint(covariant FanPiecePainter oldDelegate) {
+    return oldDelegate.fanPiece.center != fanPiece.center;
   }
 }

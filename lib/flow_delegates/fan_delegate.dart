@@ -35,4 +35,3 @@ class FanFlowDelegation extends FlowDelegate {
     return animation != oldDelegate.animation;
   }
 }
-
