@@ -21,7 +21,8 @@ class FanSlice {
   final double innerRadius;
 
   /// center of the overall circle
-  final Offset center;
+  Offset _center;
+  Offset get center => _center;
 
   /// Fan Piece height
   final double pieceHeight ;
@@ -52,17 +53,24 @@ class FanSlice {
     required this.pieceHeight,
     required this.swipe,
     required this.innerRadius,
-    required this.center,
-  }) : _startRadiusOfLastPiece = innerRadius;
+    required Offset center,
+  }) :
+        _startRadiusOfLastPiece = innerRadius,
+        _center = center
+  ;
+
+  void updateCenter(Offset newCenter) {
+    _center = newCenter;
+  }
 
   void addFanPiece(Color color) {
     double outer = _startRadiusOfLastPiece + pieceHeight;
     _fanPieceList.add(
         FanPiece(
-            startAngle: angleStart,
+            angleStart: angleStart,
             swipe: swipe,
-            innerRadius: _startRadiusOfLastPiece,
-            outerRadius: outer,
+            radiusStart: _startRadiusOfLastPiece,
+            radiusEnd: outer,
             color: color,
             center: center
         )

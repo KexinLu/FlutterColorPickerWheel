@@ -8,28 +8,28 @@ import 'package:wheel_color_picker/models/fan_piece.dart';
 void main() {
   test('Can create FanPiece', () {
     FanPiece fanPiece = FanPiece(
-      startAngle : pi,
+      angleStart : pi,
       swipe: 0.5 ,
-      outerRadius: 50,
-      innerRadius: 30,
+      radiusEnd: 50,
+      radiusStart: 30,
       color: Colors.red,
       center: const Offset(80,80),
     );
 
     expect(fanPiece.center, const Offset(80,80));
-    expect(fanPiece.startAngle, pi);
+    expect(fanPiece.angleStart, pi);
     expect(fanPiece.swipe, 0.5);
-    expect(fanPiece.outerRadius, 50);
-    expect(fanPiece.innerRadius, 30);
+    expect(fanPiece.radiusEnd, 50);
+    expect(fanPiece.radiusStart, 30);
     expect(fanPiece.color, Colors.red);
   });
 
   test('Can covert to cartesian properly', () {
     FanPiece fanPiece = FanPiece(
-      startAngle : pi,
+      angleStart : pi,
       swipe: 0.5 ,
-      outerRadius: 50,
-      innerRadius: 30,
+      radiusEnd: 50,
+      radiusStart: 30,
       color: Colors.red,
       center: const Offset(80,80),
     );

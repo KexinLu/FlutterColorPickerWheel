@@ -10,16 +10,16 @@ class FanPiece {
 
   /// The follow four properties defines the shape of a piece of a donut
   /// starting radians of the fan piece.
-  final double startAngle;
+  final double angleStart;
 
   /// how much radians this piece is going to cover.
   final double swipe;
 
   /// outer radius of this piece.
-  final double outerRadius;
+  final double radiusEnd;
 
   /// inner radius of this piece.
-  final double innerRadius;
+  final double radiusStart;
 
   /// color of this piece
   final Color color;
@@ -32,10 +32,10 @@ class FanPiece {
   /// FanPiece model is responsible to convert spherical coordinates to
   /// cartesian coordinates
   FanPiece({
-    required this.startAngle,
+    required this.angleStart,
     required this.swipe,
-    required this.outerRadius,
-    required this.innerRadius,
+    required this.radiusEnd,
+    required this.radiusStart,
     required this.color,
     required this.center,
   });
@@ -43,32 +43,32 @@ class FanPiece {
   /// when drawing a donut in one stroke, starting from the outer perimeter,
   /// this is the starting point
   Offset get outerArcStart {
-    double x = outerRadius * cos(startAngle) + center.dx;
-    double y = outerRadius * sin(startAngle) + center.dy;
+    double x = radiusEnd * cos(angleStart) + center.dx;
+    double y = radiusEnd * sin(angleStart) + center.dy;
     return Offset(x,y);
   }
 
   /// when drawing a donut in one stroke, starting from the outer perimeter,
   /// this is the second point
   Offset get outerArcEnd {
-    double x2 = outerRadius * cos(startAngle + swipe) + center.dx;
-    double y2 = outerRadius * sin(startAngle + swipe) + center.dy;
+    double x2 = radiusEnd * cos(angleStart + swipe) + center.dx;
+    double y2 = radiusEnd * sin(angleStart + swipe) + center.dy;
     return Offset(x2,y2);
   }
 
   /// when drawing a donut in one stroke, starting from the outer perimeter,
   /// this is the third point, it lies on the inner perimeter of the donut
   Offset get innerArcEnd {
-    double x3 = innerRadius * cos(startAngle + swipe) + center.dx;
-    double y3 = innerRadius * sin(startAngle + swipe) + center.dy;
+    double x3 = radiusStart * cos(angleStart + swipe) + center.dx;
+    double y3 = radiusStart * sin(angleStart + swipe) + center.dy;
     return Offset(x3,y3);
   }
 
   /// when drawing a donut in one stroke, starting from the outer perimeter,
   /// this is the final point, it lies on the inner perimeter of the donut
   Offset get innerArcStart {
-    double x4 = innerRadius * cos(startAngle) + center.dx;
-    double y4 = innerRadius * sin(startAngle) + center.dy;
+    double x4 = radiusStart * cos(angleStart) + center.dx;
+    double y4 = radiusStart * sin(angleStart) + center.dy;
     return Offset(x4,y4);
   }
 
@@ -84,18 +84,33 @@ class FanPiece {
     p.moveTo(outerArcStart.dx, outerArcStart.dy);
 
     /// an arc which is outer perimeter
-    p.arcToPoint(outerArcEnd, radius: Radius.circular(outerRadius));
+    p.arcToPoint(outerArcEnd, radius: Radius.circular(radiusEnd));
 
     /// a straight line to inner perimeter
     p.lineTo(innerArcEnd.dx, innerArcEnd.dy);
 
     /// an arc which is the inner perimeter, clockwise: false will keep the concavity correct
-    p.arcToPoint(innerArcStart, radius: Radius.circular(innerRadius), clockwise: false);
+    p.arcToPoint(innerArcStart, radius: Radius.circular(radiusStart), clockwise: false);
 
     /// enclose the path
     p.close();
 
     return p;
+  }
+
+  @override
+  String toString() {
+    return '''FanPiece {
+       angleStart: $angleStart,
+       swipe: $swipe,
+       radiusStart: $radiusStart,
+       radiusEnd: $radiusEnd,
+       color: $color,
+       innerArcStart: $innerArcStart,
+       innerArcEnd: $innerArcEnd,
+       outerArcStart: $outerArcStart,
+       outerArcEnd: $outerArcEnd,
+    }''';
   }
 }
 

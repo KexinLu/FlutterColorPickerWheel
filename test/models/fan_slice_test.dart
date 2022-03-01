@@ -47,15 +47,15 @@ void main() {
       expect(fanSlice.height, 110);
       expect(fanSlice.outerRadius, 290);
 
-      expect(fanSlice.fanPieceList[0].innerRadius, 180);
-      expect(fanSlice.fanPieceList[0].outerRadius, 235);
-      expect(fanSlice.fanPieceList[0].startAngle, pi);
+      expect(fanSlice.fanPieceList[0].radiusStart, 180);
+      expect(fanSlice.fanPieceList[0].radiusEnd, 235);
+      expect(fanSlice.fanPieceList[0].angleStart, pi);
       expect(fanSlice.fanPieceList[0].swipe, 0.2 * pi);
       expect(fanSlice.fanPieceList[0].color, Colors.red);
 
-      expect(fanSlice.fanPieceList[1].innerRadius, 235);
-      expect(fanSlice.fanPieceList[1].outerRadius, 290);
-      expect(fanSlice.fanPieceList[1].startAngle, pi);
+      expect(fanSlice.fanPieceList[1].radiusStart, 235);
+      expect(fanSlice.fanPieceList[1].radiusEnd, 290);
+      expect(fanSlice.fanPieceList[1].angleStart, pi);
       expect(fanSlice.fanPieceList[1].swipe, 0.2 * pi);
       expect(fanSlice.fanPieceList[1].color, Colors.green);
     });
