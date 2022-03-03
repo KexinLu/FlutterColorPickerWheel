@@ -42,14 +42,18 @@ class WheelColorPicker extends StatefulWidget {
   /// callback function which gets invoked when one color is picked
   final void Function(Color) onSelect;
 
-  /// stick
+  /// [stickToButton] will cause the overlay to center at the [WheelInkButton]
   final bool stickToButton;
 
+  /// see [ButtonBehaviour], [ButtonBehaviour.longPressToOpen]
+  /// [ButtonBehaviour.clickToOpen]
   final ButtonBehaviour? behaviour;
 
   final void Function(Color)? onTap;
 
   final bool debugMode;
+
+  final double fanPieceBorderSize;
 
   /// {@macro wheel_color_picker}
   const WheelColorPicker({
@@ -64,6 +68,7 @@ class WheelColorPicker extends StatefulWidget {
     this.behaviour = ButtonBehaviour.longPressToOpen,
     this.stickToButton = true,
     this.colorList = defaultAvailableColors,
+    this.fanPieceBorderSize = 0,
     this.debugMode = false,
   }) : super(key: key);
 
@@ -140,11 +145,14 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
       );
     }
     overlayContent = Positioned(
-        child: WheelOverlayEntry(
+        child: WheelOverlayEntryContent(
             animationConfig: widget.animationConfig,
             animationController: _controller,
             colors: widget.colorList,
+            innerRadius: widget.innerRadius,
             layerLinkConfig: layerLinkConfig,
+            pieceBorderSize: widget.fanPieceBorderSize,
+            hideOverlay: _hideOverlay,
             onSelect: (Color selectedColor) {
               /// isOpen is necessary to prevent user from selecting another fan
               /// piece after the color callback has been invoked
@@ -172,6 +180,7 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   /// hide the overlay entry
   void _hideOverlay() async {
     isOpen = false;
+    _controller.reverse();
     Future.delayed(Duration(milliseconds: widget.animationConfig.animationDurationInMillisecond)).then((_) {
       if (overlayEntry != null) {
         overlayEntry!.remove();
@@ -195,8 +204,7 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
     if (!isOpen) {
       _showOverlay(context);
     } else if (overlayEntry != null) {
-      overlayEntry!.remove();
-      overlayEntry = null;
+      _hideOverlay();
     }
   }
 
@@ -204,8 +212,7 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
     if (widget.behaviour == ButtonBehaviour.clickToOpen && !isOpen) {
       _showOverlay(context);
     } else if (overlayEntry != null && widget.behaviour != ButtonBehaviour.clickToOpen) {
-      overlayEntry!.remove();
-      overlayEntry = null;
+      _hideOverlay();
     }
     if (widget.onTap != null) {
       widget.onTap!(color);

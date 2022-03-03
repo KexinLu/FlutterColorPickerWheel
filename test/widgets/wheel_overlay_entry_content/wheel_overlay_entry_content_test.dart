@@ -16,7 +16,7 @@ void main() {
       final GlobalKey target = GlobalKey();
       AnimationController controller = AnimationController(vsync: tester);
       await tester.pumpWidget(
-          WheelOverlayEntry(
+          WheelOverlayEntryContent(
             debugMode: true,
             key: target,
             colors: colorsList,
@@ -38,7 +38,7 @@ void main() {
       final GlobalKey target = GlobalKey();
       AnimationController controller = AnimationController(vsync: tester);
       await tester.pumpWidget(
-          WheelOverlayEntry(
+          WheelOverlayEntryContent(
             key: target,
             colors: colorsList,
             debugMode: true,
@@ -61,7 +61,7 @@ void main() {
       final GlobalKey target = GlobalKey();
       AnimationController controller = AnimationController(vsync: tester);
       await tester.pumpWidget(
-          WheelOverlayEntry(
+          WheelOverlayEntryContent(
             key: target,
             debugMode: true,
             colors: colorsList,
@@ -88,7 +88,7 @@ void main() {
           duration: const Duration(milliseconds: 500)
       );
       await tester.pumpWidget(
-          WheelOverlayEntry(
+          WheelOverlayEntryContent(
               key: target,
               debugMode: true,
               colors: colorsList,
@@ -133,7 +133,7 @@ void main() {
           duration: const Duration(milliseconds: 500)
       );
       await tester.pumpWidget(
-          WheelOverlayEntry(
+          WheelOverlayEntryContent(
               key: target,
               debugMode: true,
               colors: colorsList,

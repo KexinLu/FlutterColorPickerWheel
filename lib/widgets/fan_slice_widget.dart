@@ -25,6 +25,9 @@ class FanSliceWidget extends StatefulWidget {
   /// animation config used by FanSliceDelegate
   final FanAnimationConfig fanAnimationConfig;
 
+  /// border size of each fan piece
+  final double pieceBorderSize;
+
   /// {@macro fan_slice_widget}
   const FanSliceWidget({
     Key? key,
@@ -32,6 +35,7 @@ class FanSliceWidget extends StatefulWidget {
     required this.callback,
     required this.fanSlice,
     required this.controller,
+    this.pieceBorderSize = 0,
   }) : super(key: key);
 
   @override
@@ -276,8 +280,8 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
           ...widget.fanSlice.fanPieceList.map((e) =>
               FanPieceWidget(
                   fanPiece: e,
-                  ///key: GlobalKey(),
-                  callback: widget.callback
+                  callback: widget.callback,
+                  pieceBorderSize: widget.pieceBorderSize,
               )
           )
         ]
