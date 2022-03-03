@@ -36,13 +36,13 @@ void main() {
       Finder widget = find.byKey(target).first;
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_delegate_distance_start.png')
+          matchesGoldenFile('snapshots/distance/fan_slice_delegate_distance_start.png')
       );
       controller.forward(from: 0.0);
       await tester.pumpAndSettle();
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_rendering_distance_done.png')
+          matchesGoldenFile('snapshots/distance/fan_slice_rendering_distance_done.png')
       );
     });
 
@@ -73,13 +73,13 @@ void main() {
       Finder widget = find.byKey(target).first;
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_delegate_opacity_start.png')
+          matchesGoldenFile('snapshots/opacity/fan_slice_delegate_opacity_start.png')
       );
       controller.forward(from: 0.0);
       await tester.pumpAndSettle();
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_rendering_opacity_done.png')
+          matchesGoldenFile('snapshots/opacity/fan_slice_rendering_opacity_done.png')
       );
     });
 
@@ -110,13 +110,13 @@ void main() {
       Finder widget = find.byKey(target).first;
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_delegate_rotation_start.png')
+          matchesGoldenFile('snapshots/rotation/fan_slice_delegate_rotation_start.png')
       );
       controller.forward(from: 0.0);
       await tester.pumpAndSettle();
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_rendering_rotation_done.png')
+          matchesGoldenFile('snapshots/rotation/fan_slice_rendering_rotation_done.png')
       );
     });
 
@@ -148,13 +148,13 @@ void main() {
       Finder widget = find.byKey(target).first;
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_delegate_scale_start.png')
+          matchesGoldenFile('snapshots/scale/fan_slice_delegate_scale_start.png')
       );
       controller.forward(from: 0.0);
       await tester.pumpAndSettle();
       await expectLater(
           widget,
-          matchesGoldenFile('fan_slice_rendering_scale_done.png')
+          matchesGoldenFile('snapshots/scale/fan_slice_rendering_scale_done.png')
       );
     });
   });

@@ -29,6 +29,7 @@ class FanPiecePainter extends CustomPainter {
         /// Important thing here is the PaintingStyle.fill, which will fill the path
         /// AND! the [PaintingStyle.fill] also makes the path.contains(point) a viable
         /// hit testing source
+          ..isAntiAlias=true
           ..style=PaintingStyle.fill
           ..color=fanPiece.color
     );
