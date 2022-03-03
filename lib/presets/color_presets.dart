@@ -117,6 +117,13 @@ const List<List<Color>> defaultAvailableColors = [
     Color(0xFF8D6E63),
   ],
   [
+    Color(0xFFECEFF1),
+    Color(0xFFCFD8DC),
+    Color(0xFFB0BEC5),
+    Color(0xFF90A4AE),
+    Color(0xFF78909C),
+  ],
+  [
     Color(0xFFF44336),
     Color(0xFFE53935),
     Color(0xFFD32F2F),
@@ -236,13 +243,6 @@ const List<List<Color>> defaultAvailableColors = [
     Color(0xFF3E2723),
   ],
   [
-    Color(0xFFECEFF1),
-    Color(0xFFCFD8DC),
-    Color(0xFFB0BEC5),
-    Color(0xFF90A4AE),
-    Color(0xFF78909C),
-  ],
-  [
     Color(0xFF607D8B),
     Color(0xFF546E7A),
     Color(0xFF455A64),
@@ -251,7 +251,6 @@ const List<List<Color>> defaultAvailableColors = [
   ],
   [
     Color(0xFF9E9E9E),
-    Color(0xFF757575),
     Color(0xFF616161),
     Color(0xFF424242),
     Color(0xFF303030), // only for background color in dark theme
@@ -259,7 +258,6 @@ const List<List<Color>> defaultAvailableColors = [
   ],
   [
     Color(0xFFFAFAFA),
-    Color(0xFFF5F5F5),
     Color(0xFFEEEEEE),
     Color(0xFFE0E0E0),
     Color(0xFFD6D6D6), // only for raised button while pressed in light theme

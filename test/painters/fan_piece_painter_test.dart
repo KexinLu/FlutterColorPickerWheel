@@ -72,7 +72,7 @@ void main() {
                 )
             )
         );
-        await expectLater(find.byKey(target).first, matchesGoldenFile('fan_piece_painter_${fanPieceVariant.currentValue!.caseNumber}.png'));
+        await expectLater(find.byKey(target).first, matchesGoldenFile('snapshots/fan_piece_painter_${fanPieceVariant.currentValue!.caseNumber}.png'));
       },
       variant: fanPieceVariant
   );
@@ -105,7 +105,7 @@ void main() {
 
       await expectLater(
           find.byKey(target).first,
-          matchesGoldenFile('fan_piece_painter_hitTest_${debugDefaultTargetPlatformOverride.toString()}.png')
+          matchesGoldenFile('snapshots/fan_piece_painter_hitTest_${debugDefaultTargetPlatformOverride.toString()}.png')
       );
 
       RenderCustomPaint renderCustomPaint = target.currentContext!.findRenderObject() as RenderCustomPaint;
