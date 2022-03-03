@@ -13,10 +13,14 @@ class FanPieceWidget extends StatefulWidget {
   /// parent widget should pass a callback which takes a [FanPiece]
   final void Function(FanPiece) callback;
 
+  /// fan piece border size
+  final double pieceBorderSize;
+
   const FanPieceWidget({
     Key? key,
     required this.fanPiece,
     required this.callback,
+    this.pieceBorderSize = 0,
   }) : super(key: key);
 
   @override
@@ -35,7 +39,10 @@ class FanPieceWidgetState extends State<FanPieceWidget> {
         },
         child: CustomPaint(
           /// See [FanPiecePainter]
-          painter: FanPiecePainter(fanPiece: widget.fanPiece),
+          painter: FanPiecePainter(
+              fanPiece: widget.fanPiece,
+            borderSize: widget.pieceBorderSize,
+          ),
         )
     );
   }
