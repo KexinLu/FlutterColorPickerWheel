@@ -9,7 +9,6 @@ environment:
 
 dependencies:
   matrix4_transform: ^2.0.1
-  defer_pointer: ^0.0.2
   flutter:
     sdk: flutter
 
