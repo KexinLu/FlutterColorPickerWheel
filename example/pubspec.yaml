@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   matrix4_transform: ^2.0.1
+  dashbook: ^0.1.6
+  flutter_markdown: ^0.6.9
+  flutter_highlight: 0.7.0
+  fluttertoast: 8.0.9
   wheel_color_picker:
     path: ..
   cupertino_icons: ^1.0.2

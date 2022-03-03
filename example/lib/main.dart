@@ -1,149 +1,56 @@
+import 'package:example/example_custom_animation.dart';
+import 'package:example/example_custom_color_set.dart';
+import 'package:example/example_detached.dart';
+import 'package:example/example_detached_with_gap.dart';
+import 'package:example/example_fan_default.dart';
+import 'package:example/example_fan_default_tap.dart';
+import 'package:example/example_fan_simple.dart';
+import 'package:example/example_fan_simple_tap.dart';
+import 'package:example/example_ray_default.dart';
+import 'package:example/example_ray_default_tap.dart';
+import 'package:example/example_ray_simple.dart';
+import 'package:example/example_ray_simple_tap.dart';
+import 'package:example/example_use_overlay_without_button.dart';
 import 'package:flutter/material.dart';
-import 'package:wheel_color_picker/models/layerlink_config.dart';
-import 'package:wheel_color_picker/models/models.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+
+import 'package:dashbook/dashbook.dart';
 
 void main() {
-  ///debugRepaintRainbowEnabled = true;
-  runApp(const WheelColorPickerDemo());
+  final dashbook = Dashbook(
+    title: "Flutter Wheel Color Picker ",
+
+  );
+
+  dashbook
+      .storiesOf('Attached To Button - Long Press')
+      .decorator(CenterDecorator())
+      .add('SunRayAnimation - Simple Color Preset', (ctx) => const ExampleRaySimple())
+      .add('SunRayAnimation - Default Color Preset', (ctx) => const ExampleRayDefault())
+      .add('FanAnimation - Simple Color Preset', (ctx) => const ExampleFanSimple())
+      .add('FanAnimation - Default Color Preset', (ctx) => const ExampleFanDefault())
+  ;
+  dashbook
+      .storiesOf('Attached To Button - Tap')
+      .decorator(CenterDecorator())
+      .add('SunRayAnimation - Simple Color Preset', (ctx) => const ExampleRaySimpleTap())
+      .add('SunRayAnimation - Default Color Preset', (ctx) => const ExampleRayDefaultTap())
+      .add('FanAnimation - Simple Color Preset', (ctx) => const ExampleFanSimpleTap())
+      .add('FanAnimation - Default Color Preset', (ctx) => const ExampleFanDefaultTap())
+  ;
+  dashbook
+      .storiesOf('Detached from Button - Tap')
+      .decorator(CenterDecorator())
+      .add('Detached', (ctx) => const ExampleDetached())
+      .add('Detached with Gap', (ctx) => const ExampleDetachedWithGap())
+  ;
+  dashbook
+      .storiesOf('Customized')
+      .decorator(CenterDecorator())
+      .add('Custom Color Set', (ctx) => const ExampleCustomColorSet())
+      .add('Custom Animation', (ctx) => const ExampleCustomAnimation())
+      .add('Use WheelOverlayEntry only', (ctx) => const ExampleUseOverlayOnly())
+  ;
+
+  // Since dashbook is a widget itself, you can just call runApp passing it as a parameter
+  runApp(dashbook);
 }
-
-class WheelColorPickerDemo extends StatefulWidget {
-  const WheelColorPickerDemo({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return WheelColorPickerDemoState();
-  }
-}
-
-class WheelColorPickerDemoState extends State<WheelColorPickerDemo> with SingleTickerProviderStateMixin {
-  Color color2 = Colors.redAccent;
-  late AnimationController controller;
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    controller.forward();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Wheel Color Picker Demo'),
-            ),
-            body: NotificationListener<ScrollEndNotification>(
-                onNotification: (notification) {
-                  return true;
-                },
-                child: GridView.count(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 20,
-                    children: [
-                      Container(
-                          width: 200,
-                          height: 200,
-                          color: Colors.grey[300],
-                          child: WheelColorPicker(
-                            onSelect: (Color color) {
-                              print(color.toString());
-                            },
-                            key: const GlobalObjectKey("wheel_color_picker"),
-                            defaultColor: Colors.blueAccent,
-                            animationConfig: fanLikeAnimationConfig,
-                            colorList: defaultAvailableColors,
-                            buttonSize: 40,
-                            pieceHeight: 25,
-                            innerRadius: 80,
-                          )
-                      ),
-                      Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(
-                            color: color2,
-                            width: 8,
-                          ),
-                        ),
-                        child: WheelColorPicker(
-                          onSelect: (Color color) {
-                            setState(() {
-                              color2 = color;
-                            });
-                          },
-                          key: const GlobalObjectKey("wheel_color_picker_2"),
-                          defaultColor: color2,
-                          onTap: (color) {
-                          },
-                          animationConfig: sunRayLikeAnimationConfig,
-                          stickToButton: true,
-                          colorList: simpleColors,
-                          behaviour: ButtonBehaviour.clickToOpen,
-                          buttonSize: 50,
-                          pieceHeight: 15,
-                          innerRadius: 100,
-                        ),
-                      ),
-                      Container(
-                          width: 200,
-                          height: 200,
-                          color: Colors.grey[300],
-                          child: WheelColorPicker(
-                            onSelect: (Color color) {
-                              print(color.toString());
-                            },
-                            key: const GlobalObjectKey("wheel_color_picker_3"),
-                            defaultColor: Colors.blueAccent,
-                            animationConfig: fanLikeAnimationConfig,
-                            colorList: defaultAvailableColors,
-                            buttonSize: 40,
-                            pieceHeight: 25,
-                            innerRadius: 80,
-                          )
-                      ),
-                      Container(
-                          width: 200,
-                          height: 200,
-                          color: Colors.grey[300],
-                          child: WheelColorPicker(
-                            onSelect: (Color color) {
-                              print(color.toString());
-                            },
-                            key: const GlobalObjectKey("wheel_color_picker_4"),
-                            stickToButton: false,
-                            defaultColor: Colors.blueAccent,
-                            colorList: defaultAvailableColors,
-                            fanPieceBorderSize: 10,
-                            animationConfig: fanLikeAnimationConfig,
-                            buttonSize: 40,
-                            pieceHeight: 45,
-                            innerRadius: 100,
-                          )
-                      ),
-                      WheelOverlayEntryContent(
-                        alignment: Alignment.center,
-                        layerLinkConfig: const LayerLinkConfig(
-                          enabled: false,
-                        ),
-                        onSelect: (Color color) {
-                          print(color.toString());
-                        },
-                        key: const GlobalObjectKey("wheel_overlay_entry"),
-                        animationConfig: fanLikeAnimationConfig,
-                        colors: [[Colors.red, Colors.redAccent], [Colors.green, Colors.greenAccent]],
-                        pieceHeight: 25,
-                        animationController: controller,
-                      ),
-                    ]
-                )
-            )
-    ),
-    );
-  }
-}
-

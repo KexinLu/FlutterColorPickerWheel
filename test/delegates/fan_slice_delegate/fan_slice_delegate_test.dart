@@ -206,7 +206,8 @@ class FanSliceDelegateTestComponentState extends State<FanSliceDelegateTestCompo
                   distanceAnimation: widget.distanceAnimation,
                   angle: widget.angle,
                   center: widget.center,
-                  radius: widget.radius,
+                  radius: widget.radius, 
+                  referenceAnimation: Tween<double>(begin: 0, end: 1).animate(widget.controller),
               ),
               children: [
                 Center(

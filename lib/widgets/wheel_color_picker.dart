@@ -130,7 +130,11 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   }
 
   @override
-  void dispose() {
+  void dispose() async {
+    if (overlayEntry != null) {
+      overlayEntry!.remove();
+      overlayEntry = null;
+    }
     _controller.dispose();
     super.dispose();
   }
@@ -181,7 +185,7 @@ class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderS
   void _hideOverlay() async {
     isOpen = false;
     _controller.reverse();
-    Future.delayed(Duration(milliseconds: widget.animationConfig.animationDurationInMillisecond)).then((_) {
+    return Future.delayed(Duration(milliseconds: widget.animationConfig.animationDurationInMillisecond)).then((_) {
       if (overlayEntry != null) {
         overlayEntry!.remove();
         overlayEntry = null;
