@@ -1,7 +1,5 @@
-import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
-import 'package:flutter/rendering.dart';
 import 'package:wheel_color_picker/models/animation_config.dart';
 
 /// {@template fan_slice_delegate}
@@ -31,6 +29,8 @@ class FanSliceDelegate extends FlowDelegate {
   /// radius of the inner boundary
   final double radius;
 
+  final Animation<double> referenceAnimation;
+
   /// Removed for now since it is not used for now
   /// Animation config, see [FanAnimationConfig]
   /// final FanAnimationConfig animationConfig;
@@ -43,15 +43,11 @@ class FanSliceDelegate extends FlowDelegate {
     required this.rotationAnimation,
     required this.opacityAnimation,
     required this.distanceAnimation,
+    required this.referenceAnimation,
     required this.angle,
     required this.center,
     required this.radius,
-  }) : super(repaint: Listenable.merge([
-    distanceAnimation,
-    rotationAnimation,
-    opacityAnimation,
-    distanceAnimation,
-  ]));
+  }) : super(repaint: referenceAnimation);
 
   /// [paintChildren] is responsible to draw the children elements
   @override
@@ -79,11 +75,7 @@ class FanSliceDelegate extends FlowDelegate {
 
   @override
   bool shouldRepaint(covariant FanSliceDelegate oldDelegate) {
-    /// when one of these changes, repaint
-    return scaleAnimation != oldDelegate.scaleAnimation
-        || opacityAnimation != oldDelegate.opacityAnimation
-        || distanceAnimation != oldDelegate.distanceAnimation
-        || rotationAnimation != oldDelegate.rotationAnimation
-    ;
+    /// never repaint, rely on super.repaint
+    return false;
   }
 }

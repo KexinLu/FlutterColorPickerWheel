@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:wheel_color_picker/models/animation_config.dart';
 import 'package:wheel_color_picker/models/fan_piece.dart';
@@ -20,30 +18,15 @@ class FanSliceWidget extends StatefulWidget {
   /// animationController responsible to control the open and the close animation
   final AnimationController controller;
 
-  /// callback function supplied to each piece, when the piece is clicked
-  /// this function will get called
+  /// callback function supplied to each piece, when a piece is clicked
+  /// this function will be invoked
   final void Function(FanPiece) callback;
-
-  /// entry Delay for the animation
-  /// if we break down the animation of each piece entering the wheel into 3 parts
-  /// wait -> move -> stop
-  /// wait + move + stop = 1 which is 100%
-  /// [entryDelayWeight] represents how much weight wait would induce
-  /// eg. when wait = 0.5, then the piece is going to stay still for half of the
-  /// animation duration then started moving
-  final double entryDelayWeight;
-
-  /// finish Delay for the animation
-  /// if we break down the animation of each piece entering the wheel into 3 parts
-  /// wait -> move -> stop
-  /// wait + move + stop = 1 which is 100%
-  /// [finishDelayWeight] represents how much weight wait would induce
-  /// eg. when wait = 0.4, then the piece is going to move then stay at the destination
-  /// for 40% of the animation duration.
-  final double finishDelayWeight;
 
   /// animation config used by FanSliceDelegate
   final FanAnimationConfig fanAnimationConfig;
+
+  /// border size of each fan piece
+  final double pieceBorderSize;
 
   /// {@macro fan_slice_widget}
   const FanSliceWidget({
@@ -52,15 +35,8 @@ class FanSliceWidget extends StatefulWidget {
     required this.callback,
     required this.fanSlice,
     required this.controller,
-    this.entryDelayWeight = 0,
-    this.finishDelayWeight = 0,
-  }) :
-        /// opacity Animation requires finishDelayWeight to be less than 80%
-        assert(finishDelayWeight < 0.8),
-        /// Note: entryDelayWeight + finishDelayWeight < 1
-        /// see [entryDelayWeight] and [finishDelayWeight]
-        assert(entryDelayWeight + finishDelayWeight < 1),
-        super(key: key);
+    this.pieceBorderSize = 0,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -292,8 +268,7 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
     return RepaintBoundary(child: Flow(
       /// see [FanSliceDelegate]
         delegate: FanSliceDelegate(
-          /// removed for now
-          ///animationConfig: widget.fanAnimationConfig,
+          referenceAnimation: Tween<double>(begin: 0,end:1).animate(widget.controller),
           angle: widget.fanSlice.angleStart,
           rotationAnimation: rotationAnimation,
           opacityAnimation: opacityAnimation,
@@ -306,8 +281,8 @@ class FanSliceWidgetState extends State<FanSliceWidget> {
           ...widget.fanSlice.fanPieceList.map((e) =>
               FanPieceWidget(
                   fanPiece: e,
-                  key: GlobalKey(),
-                  callback: widget.callback
+                  callback: widget.callback,
+                  pieceBorderSize: widget.pieceBorderSize,
               )
           )
         ]

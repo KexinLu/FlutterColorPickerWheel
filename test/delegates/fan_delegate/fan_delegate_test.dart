@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:wheel_color_picker/flow_delegates/fan_delegate.dart';
 
 void main() {
@@ -18,7 +15,7 @@ void main() {
       Finder widget = find.byKey(target).first;
       await expectLater(
           widget,
-          matchesGoldenFile('fan_delegate_rendering.png')
+          matchesGoldenFile('snapshots/fan_delegate_rendering.png')
       );
 
       TestComponentState widgetState = tester.state(find.byKey(target));
@@ -28,7 +25,7 @@ void main() {
       await tester.pumpAndSettle();
       await expectLater(
           widget,
-          matchesGoldenFile('fan_delegate_rendering_done.png')
+          matchesGoldenFile('snapshots/fan_delegate_rendering_done.png')
       );
     });
   });

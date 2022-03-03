@@ -1,0 +1,4 @@
+enum ButtonBehaviour {
+  longPressToOpen,
+  clickToOpen,
+}

@@ -1,3 +1,3 @@
 export 'widgets/widgets.dart';
-export 'available_colors.dart';
+export 'presets/color_presets.dart';
 export 'presets.dart';
