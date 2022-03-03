@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wheel_color_picker/wheel_color_picker.dart';
 
 class ExampleRayDefault extends StatefulWidget {
