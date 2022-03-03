@@ -69,7 +69,7 @@ class ExampleDetachedWithGapState extends State<ExampleDetachedWithGap> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("wheel_color_picker_example_overlay"),
+                                  key: const GlobalObjectKey("wheel_color_picker_example_overlay_gap"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   behaviour: ButtonBehaviour.clickToOpen,
