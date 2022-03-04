@@ -5,7 +5,7 @@
   <img alt="dashbook" width="600px" src="https://raw.githubusercontent.com/KexinLu/FlutterColorPickerWheel/main/git_assets/logo.png">
 </p>
 
-Flutter Color Picker Wheel is an easy to use widget which can be heavily customized.
+Flutter Color Picker Wheel is an easy-to-use widget that can be heavily customized.
 
 - You can use the WheelColorPicker directly by providing list of colors you want to include and animation configs.
 - You can use the WheelColorPickerEntryContent and manage OverlayEntry yourself.
