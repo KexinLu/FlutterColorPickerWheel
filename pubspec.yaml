@@ -1,7 +1,9 @@
 name: flutter_color_picker_wheel
 description: A Wheel Shapde Color Picker written fully in dart
 version: 0.0.1
-homepage:  https://github.com/KexinLu/FlutterColorPickerWheel
+homepage: https://github.com/KexinLu/FlutterColorPickerWheel
+repository: https://github.com/KexinLu/FlutterColorPickerWheel
+issue_tracker: https://github.com/KexinLu/FlutterColorPickerWheel/issues
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
