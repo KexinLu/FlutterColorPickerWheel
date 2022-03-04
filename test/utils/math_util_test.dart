@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:wheel_color_picker/utils/math_util.dart';
+import 'package:flutter_color_picker_wheel/utils/math_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

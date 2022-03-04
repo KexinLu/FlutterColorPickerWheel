@@ -35,7 +35,7 @@ you can find more examples in the example path of this repository
 <img width="1604" alt="Sun Ray Simple" src="https://raw.githubusercontent.com/KexinLu/FlutterColorPickerWheel/main/git_assets/ray.gif">
 
 ```dart
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 Color color; /// you want to initialize this color in the initState method
 

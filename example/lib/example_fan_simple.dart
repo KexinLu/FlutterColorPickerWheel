@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleFanSimple extends StatefulWidget {
   const ExampleFanSimple({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ WheelColorPicker(
             color = newColor;
         });
     },
-    key: const GlobalObjectKey("wheel_color_picker_fan_simple"),
+    key: const GlobalObjectKey("flutter_color_picker_wheel_fan_simple"),
     defaultColor: color,
     animationConfig: fanLikeAnimationConfig,
     colorList: simpleColors,
@@ -65,7 +65,7 @@ class ExampleFanSimpleState extends State<ExampleFanSimple> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("wheel_color_picker_example_fan_simple"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example_fan_simple"),
                                   defaultColor: color,
                                   animationConfig: fanLikeAnimationConfig,
                                   colorList: simpleColors,

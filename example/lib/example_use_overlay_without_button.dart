@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleUseOverlayOnly extends StatefulWidget {
   const ExampleUseOverlayOnly({Key? key}) : super(key: key);
@@ -131,7 +131,7 @@ class ExampleUseOverlayOnlyState extends State<ExampleUseOverlayOnly> with Singl
   @override
   void initState() {
     super.initState();
-    controller = const AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     overlayContent = WheelOverlayEntryContent(
       animationController: controller,
       animationConfig: sunRayLikeAnimationConfig,

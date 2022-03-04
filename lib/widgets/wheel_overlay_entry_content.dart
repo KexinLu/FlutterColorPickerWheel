@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:wheel_color_picker/flow_delegates/flow_delegates.dart';
-import 'package:wheel_color_picker/models/animation_config.dart';
-import 'package:wheel_color_picker/models/fan_piece.dart';
-import 'package:wheel_color_picker/models/fan_slice.dart';
-import 'package:wheel_color_picker/models/layerlink_config.dart';
-import 'package:wheel_color_picker/utils/math_util.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/flow_delegates/flow_delegates.dart';
+import 'package:flutter_color_picker_wheel/models/animation_config.dart';
+import 'package:flutter_color_picker_wheel/models/fan_piece.dart';
+import 'package:flutter_color_picker_wheel/models/fan_slice.dart';
+import 'package:flutter_color_picker_wheel/models/layerlink_config.dart';
+import 'package:flutter_color_picker_wheel/utils/math_util.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 /// {@template wheel_overlay_entry}
 /// [WheelOverlayEntryContent] is the content of the Overlay that we want to

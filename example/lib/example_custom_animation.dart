@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/models/animation_config.dart';
-import 'package:wheel_color_picker/models/button_behaviour.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/models/animation_config.dart';
+import 'package:flutter_color_picker_wheel/models/button_behaviour.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleCustomAnimation extends StatefulWidget {
   const ExampleCustomAnimation({Key? key}) : super(key: key);

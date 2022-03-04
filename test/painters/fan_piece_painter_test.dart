@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wheel_color_picker/models/fan_piece.dart';
-import 'package:wheel_color_picker/painters/fan_piece_painter.dart';
+import 'package:flutter_color_picker_wheel/models/fan_piece.dart';
+import 'package:flutter_color_picker_wheel/painters/fan_piece_painter.dart';
 
 class TestCase {
   final FanPiece fanPiece;

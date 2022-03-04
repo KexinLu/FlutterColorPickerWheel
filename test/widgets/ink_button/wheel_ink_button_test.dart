@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wheel_color_picker/widgets/ink_button.dart';
+import 'package:flutter_color_picker_wheel/widgets/ink_button.dart';
 
 const snapshotPath = 'snapshots';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:wheel_color_picker/models/fan_piece.dart';
-import 'package:wheel_color_picker/widgets/fan_piece_widget.dart';
+import 'package:flutter_color_picker_wheel/models/fan_piece.dart';
+import 'package:flutter_color_picker_wheel/widgets/fan_piece_widget.dart';
 
 /// {@template fan_piece_painter}
 /// FanPiecePainter is responsible to paint a piece of the fan on th the canvas

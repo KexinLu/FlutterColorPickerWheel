@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/models/button_behaviour.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/models/button_behaviour.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleFanDefaultTap extends StatefulWidget {
   const ExampleFanDefaultTap({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ WheelColorPicker(
           color = newColor;
       });
   },
-  key: const GlobalObjectKey("wheel_color_picker_fan_default_tap"),
+  key: const GlobalObjectKey("flutter_color_picker_wheel_fan_default_tap"),
   defaultColor: color,
   animationConfig: fanLikeAnimationConfig,
   colorList: defaultAvailableColors, 
@@ -67,7 +67,7 @@ class ExampleFanDefaultStateTap extends State<ExampleFanDefaultTap> {
                                     });
                                   },
                                   behaviour: ButtonBehaviour.clickToOpen,
-                                  key: const GlobalObjectKey("wheel_color_picker_fan_default"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_fan_default"),
                                   defaultColor: color,
                                   animationConfig: fanLikeAnimationConfig,
                                   colorList: defaultAvailableColors,

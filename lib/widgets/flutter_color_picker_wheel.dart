@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:wheel_color_picker/flow_delegates/flow_delegates.dart';
-import 'package:wheel_color_picker/models/animation_config.dart';
-import 'package:wheel_color_picker/models/button_behaviour.dart';
-import 'package:wheel_color_picker/models/fan_slice.dart';
-import 'package:wheel_color_picker/models/layerlink_config.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
-import 'package:wheel_color_picker/widgets/ink_button.dart';
+import 'package:flutter_color_picker_wheel/flow_delegates/flow_delegates.dart';
+import 'package:flutter_color_picker_wheel/models/animation_config.dart';
+import 'package:flutter_color_picker_wheel/models/button_behaviour.dart';
+import 'package:flutter_color_picker_wheel/models/fan_slice.dart';
+import 'package:flutter_color_picker_wheel/models/layerlink_config.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
+import 'package:flutter_color_picker_wheel/widgets/ink_button.dart';
 
-/// {@template wheel_color_picker}
+/// {@template flutter_color_picker_wheel}
 ///     A button which you can click to pop out an overlay containing a wheel
 ///     of color pieces.
 /// {@endtemplate}
@@ -55,7 +55,7 @@ class WheelColorPicker extends StatefulWidget {
 
   final double fanPieceBorderSize;
 
-  /// {@macro wheel_color_picker}
+  /// {@macro flutter_color_picker_wheel}
   const WheelColorPicker({
     Key? key,
     this.animationConfig = const FanAnimationConfig(),
@@ -78,7 +78,7 @@ class WheelColorPicker extends StatefulWidget {
   }
 }
 
-/// {@macro wheel_color_picker}
+/// {@macro flutter_color_picker_wheel}
 class WheelColorPickerState extends State<WheelColorPicker> with TickerProviderStateMixin, WidgetsBindingObserver {
   final _key = GlobalKey();
   final layerLink = LayerLink();

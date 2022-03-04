@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wheel_color_picker/models/animation_config.dart';
+import 'package:flutter_color_picker_wheel/models/animation_config.dart';
 
 void main() {
   group('Testing OpacityAnimationConfig ', () {

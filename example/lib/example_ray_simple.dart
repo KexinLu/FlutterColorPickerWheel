@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleRaySimple extends StatefulWidget {
   const ExampleRaySimple({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ WheelColorPicker(
             color = newColor;
         });
     },
-    key: const GlobalObjectKey("wheel_color_picker_ray_simple"),
+    key: const GlobalObjectKey("flutter_color_picker_wheel_ray_simple"),
     defaultColor: color,
     animationConfig: sunRayLikeAnimationConfig,                   <---- Animation Config
     colorList: simpleColors,                                      <---- Color Preset
@@ -65,7 +65,7 @@ class ExampleRaySimpleState extends State<ExampleRaySimple> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("wheel_color_picker_example1"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example1"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   colorList: simpleColors,

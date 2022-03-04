@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:wheel_color_picker/flow_delegates/fan_delegate.dart';
-import 'package:wheel_color_picker/flow_delegates/fan_slice_delegate.dart';
+import 'package:flutter_color_picker_wheel/flow_delegates/fan_delegate.dart';
+import 'package:flutter_color_picker_wheel/flow_delegates/fan_slice_delegate.dart';
 
 /// {@category Models}
 /// {@template animation_config}

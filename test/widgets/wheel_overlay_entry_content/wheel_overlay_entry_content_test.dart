@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wheel_color_picker/widgets/wheel_overlay_entry_content.dart';
+import 'package:flutter_color_picker_wheel/widgets/wheel_overlay_entry_content.dart';
 
 const snapshotPath = 'snapshots';
 

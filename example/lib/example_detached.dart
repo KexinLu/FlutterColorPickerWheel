@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/models/button_behaviour.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/models/button_behaviour.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleDetached extends StatefulWidget {
   const ExampleDetached({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ WheelColorPicker(
             color = newColor;
         });
     },
-    key: const GlobalObjectKey("wheel_color_picker_example_detached"),
+    key: const GlobalObjectKey("flutter_color_picker_wheel_example_detached"),
     defaultColor: color,
     animationConfig: sunRayLikeAnimationConfig,                   
     colorList: simpleColors,                                     
@@ -68,7 +68,7 @@ class ExampleDetachedState extends State<ExampleDetached> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("wheel_color_picker_example_overlay"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example_overlay"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   behaviour: ButtonBehaviour.clickToOpen,

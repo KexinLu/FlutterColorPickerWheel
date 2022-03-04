@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
-import 'package:wheel_color_picker/models/animation_config.dart';
+import 'package:flutter_color_picker_wheel/models/animation_config.dart';
 
 /// {@template fan_slice_delegate}
 /// [FanSliceDelegate] is used by [Flow] to determine [FanSliceWidget]

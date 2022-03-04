@@ -22,20 +22,20 @@ void main() {
   );
 
   dashbook
-      .storiesOf('Attached To Button - Long Press')
-      .decorator(CenterDecorator())
-      .add('SunRayAnimation - Simple Color Preset', (ctx) => const ExampleRaySimple())
-      .add('SunRayAnimation - Default Color Preset', (ctx) => const ExampleRayDefault())
-      .add('FanAnimation - Simple Color Preset', (ctx) => const ExampleFanSimple())
-      .add('FanAnimation - Default Color Preset', (ctx) => const ExampleFanDefault())
-  ;
-  dashbook
       .storiesOf('Attached To Button - Tap')
       .decorator(CenterDecorator())
       .add('SunRayAnimation - Simple Color Preset', (ctx) => const ExampleRaySimpleTap())
       .add('SunRayAnimation - Default Color Preset', (ctx) => const ExampleRayDefaultTap())
       .add('FanAnimation - Simple Color Preset', (ctx) => const ExampleFanSimpleTap())
       .add('FanAnimation - Default Color Preset', (ctx) => const ExampleFanDefaultTap())
+  ;
+  dashbook
+      .storiesOf('Attached To Button - Long Press')
+      .decorator(CenterDecorator())
+      .add('SunRayAnimation - Simple Color Preset', (ctx) => const ExampleRaySimple())
+      .add('SunRayAnimation - Default Color Preset', (ctx) => const ExampleRayDefault())
+      .add('FanAnimation - Simple Color Preset', (ctx) => const ExampleFanSimple())
+      .add('FanAnimation - Default Color Preset', (ctx) => const ExampleFanDefault())
   ;
   dashbook
       .storiesOf('Detached from Button - Tap')

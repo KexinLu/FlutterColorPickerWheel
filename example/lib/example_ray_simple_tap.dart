@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai.dart';
-import 'package:wheel_color_picker/models/button_behaviour.dart';
-import 'package:wheel_color_picker/wheel_color_picker.dart';
+import 'package:flutter_color_picker_wheel/models/button_behaviour.dart';
+import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
 class ExampleRaySimpleTap extends StatefulWidget {
   const ExampleRaySimpleTap({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ WheelColorPicker(
             color = newColor;
         });
     },
-    key: const GlobalObjectKey("wheel_color_picker_example1"),
+    key: const GlobalObjectKey("flutter_color_picker_wheel_example1"),
     defaultColor: color,
     animationConfig: sunRayLikeAnimationConfig,                   <---- Animation Config
     colorList: simpleColors,                                      <---- Color Preset
@@ -67,7 +67,7 @@ class ExampleRaySimpleTapState extends State<ExampleRaySimpleTap> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("wheel_color_picker_example1"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example1"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   behaviour: ButtonBehaviour.clickToOpen,

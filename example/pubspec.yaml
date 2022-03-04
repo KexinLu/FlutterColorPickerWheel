@@ -15,7 +15,7 @@ dependencies:
   flutter_markdown: ^0.6.9
   flutter_highlight: 0.7.0
   fluttertoast: 8.0.9
-  wheel_color_picker:
+  flutter_color_picker_wheel:
     path: ..
   cupertino_icons: ^1.0.2
 
