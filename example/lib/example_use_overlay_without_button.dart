@@ -131,7 +131,7 @@ class ExampleUseOverlayOnlyState extends State<ExampleUseOverlayOnly> with Singl
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    controller = const AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     overlayContent = WheelOverlayEntryContent(
       animationController: controller,
       animationConfig: sunRayLikeAnimationConfig,
