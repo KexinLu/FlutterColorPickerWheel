@@ -70,7 +70,7 @@ class ExampleCustomColorSetState extends State<ExampleCustomColorSet> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example_fan_simple"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example_custom_color_set"),
                                   defaultColor: color,
                                   animationConfig: fanLikeAnimationConfig,
                                   colorList: const [

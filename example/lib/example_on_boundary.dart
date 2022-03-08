@@ -4,12 +4,12 @@ import 'package:flutter_highlight/themes/monokai.dart';
 import 'package:flutter_color_picker_wheel/models/button_behaviour.dart';
 import 'package:flutter_color_picker_wheel/flutter_color_picker_wheel.dart';
 
-class ExampleRaySimpleTap extends StatefulWidget {
-  const ExampleRaySimpleTap({Key? key}) : super(key: key);
+class ExampleOnBoundary extends StatefulWidget {
+  const ExampleOnBoundary({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return ExampleRaySimpleTapState();
+    return ExampleOnBoundaryState();
   }
 }
 
@@ -31,7 +31,7 @@ WheelColorPicker(
 )
 ''';
 
-class ExampleRaySimpleTapState extends State<ExampleRaySimpleTap> {
+class ExampleOnBoundaryState extends State<ExampleOnBoundary> {
   Color color = Colors.redAccent;
 
   @override
@@ -40,19 +40,85 @@ class ExampleRaySimpleTapState extends State<ExampleRaySimpleTap> {
       primary: true,
       crossAxisSpacing: 20,
       mainAxisSpacing: 20,
-      crossAxisCount: 2,
+      crossAxisCount: 3,
       children: [
         Container(
             color: Colors.grey[300],
             child:
-                Container(
-                  padding: const EdgeInsets.all(150),
+            Container(
+                padding: const EdgeInsets.all(150),
+                child: Column(
+                    children:[
+                      Expanded(
+                          flex:12,
+                          child: Container(
+                              height: 10,
+                              width: 500,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45),
+                                  border: Border.all(
+                                      width: 15,
+                                      color: color
+                                  )
+                              ),
+                              child: WheelColorPicker(
+                                onSelect: (Color newColor) {
+                                  setState(() {
+                                    color = newColor;
+                                  });
+                                },
+                                key: const GlobalObjectKey("on_boundary1"),
+                                defaultColor: color,
+                                animationConfig: sunRayLikeAnimationConfig,
+                                behaviour: ButtonBehaviour.clickToOpen,
+                                colorList: simpleColors,
+                                buttonSize: 40,
+                                pieceHeight: 35,
+                                innerRadius: 180,
+                              )
+                          )
+                      ),
+                      const Expanded(flex:1, child: SizedBox()),
+                      Expanded(
+                          flex:8,
+                          child: Align(
+                              alignment: Alignment.topCenter,
+                              child: SizedBox(
+                                  height: 500,
+                                  width: 500,
+                                  child: RichText(
+                                      text: const TextSpan(
+                                          style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.indigo,
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(text: 'Tap to open \n'),
+                                            TextSpan(text: 'Drag to rotate \n'),
+                                          ]
+                                      )
+                                  )
+                              )
+                          )
+                      ),
+                    ]
+
+                )
+
+            )
+        ),
+        Container(
+            color: Colors.grey[300],
+            child:
+            Container(
+                padding: const EdgeInsets.all(150),
                   child: Column(
                       children:[
                         Expanded(
                             flex:12,
                             child: Container(
-                                height: 500,
+                                height: 10,
                                 width: 500,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(45),
@@ -67,7 +133,7 @@ class ExampleRaySimpleTapState extends State<ExampleRaySimpleTap> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("flutter_color_picker_wheel_ray_simple_tap"),
+                                  key: const GlobalObjectKey("on_boundary"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   behaviour: ButtonBehaviour.clickToOpen,

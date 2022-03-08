@@ -69,7 +69,7 @@ class ExampleDetachedWithGapState extends State<ExampleDetachedWithGap> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example_overlay_gap"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example_detached_overlay_gap"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   behaviour: ButtonBehaviour.clickToOpen,

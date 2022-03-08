@@ -65,7 +65,7 @@ class ExampleRaySimpleState extends State<ExampleRaySimple> {
                                       color = newColor;
                                     });
                                   },
-                                  key: const GlobalObjectKey("flutter_color_picker_wheel_example1"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_ray_simple"),
                                   defaultColor: color,
                                   animationConfig: sunRayLikeAnimationConfig,
                                   colorList: simpleColors,

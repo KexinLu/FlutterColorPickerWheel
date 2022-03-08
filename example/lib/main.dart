@@ -6,6 +6,7 @@ import 'package:example/example_fan_default.dart';
 import 'package:example/example_fan_default_tap.dart';
 import 'package:example/example_fan_simple.dart';
 import 'package:example/example_fan_simple_tap.dart';
+import 'package:example/example_on_boundary.dart';
 import 'package:example/example_ray_default.dart';
 import 'package:example/example_ray_default_tap.dart';
 import 'package:example/example_ray_simple.dart';
@@ -28,6 +29,7 @@ void main() {
       .add('SunRayAnimation - Default Color Preset', (ctx) => const ExampleRayDefaultTap())
       .add('FanAnimation - Simple Color Preset', (ctx) => const ExampleFanSimpleTap())
       .add('FanAnimation - Default Color Preset', (ctx) => const ExampleFanDefaultTap())
+      .add('OnBoundary', (ctx) => const ExampleOnBoundary())
   ;
   dashbook
       .storiesOf('Attached To Button - Long Press')

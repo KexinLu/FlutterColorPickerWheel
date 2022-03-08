@@ -67,7 +67,7 @@ class ExampleFanDefaultStateTap extends State<ExampleFanDefaultTap> {
                                     });
                                   },
                                   behaviour: ButtonBehaviour.clickToOpen,
-                                  key: const GlobalObjectKey("flutter_color_picker_wheel_fan_default"),
+                                  key: const GlobalObjectKey("flutter_color_picker_wheel_fan_default_tap"),
                                   defaultColor: color,
                                   animationConfig: fanLikeAnimationConfig,
                                   colorList: defaultAvailableColors,
