@@ -20,6 +20,16 @@ Add the dependency to your `pubspec.yaml`
 flutter_color_picker_wheel: ^0.0.1
 ```
 
+## Try it out
+
+Currently this Storybook only works well on Web
+
+TODl: [] Use another storybook to provide better preview for both web
+and phone
+
+https://flutter-color-picker-wheel.kexinlu.com
+
+
 ## Showcase
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
@@ -50,7 +60,7 @@ Widget myButton = WheelColorPicker(
   /// inital color
   defaultColor: color,
   /// fanLikeAnimationConfig is a preset, you can import this from the package
-  animationConfig: fanLikeAnimationConfig,   
+  animationConfig: fanLikeAnimationConfig,
   /// simpleColors is a preset, you can import this from the package
   colorList: simpleColors,
   /// size of the clickable button in the middle
@@ -59,7 +69,7 @@ Widget myButton = WheelColorPicker(
   pieceHeight: 25,
   /// starting radius of the donut shaped wheel
   innerRadius: 80,
-);                  
+);
 ```
 ---
 #### Custom Color Set
@@ -143,101 +153,102 @@ If you decided to go this route there are several core ideas that you need to wr
 ---
 Example:
 ```dart
-class ExampleUseOverlayOnlyState extends State<ExampleUseOverlayOnly> with SingleTickerProviderStateMixin {  
-  Color color = Colors.redAccent;  
-  late Widget overlayContent;  
-  late AnimationController controller;  
-  OverlayEntry? _overlayEntry;  
-  bool isOpen = false;  
+class ExampleUseOverlayOnlyState extends State<ExampleUseOverlayOnly> with SingleTickerProviderStateMixin {
+  Color color = Colors.redAccent;
+  late Widget overlayContent;
+  late AnimationController controller;
+  OverlayEntry? _overlayEntry;
+  bool isOpen = false;
 
-  @override  
-  void dispose() {  
-    if (_overlayEntry != null) {  
-      _overlayEntry!.remove();  
-      _overlayEntry = null;  
-    }  
-    controller.dispose();  
-    super.dispose();  
-  }  
+  @override
+  void dispose() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+    controller.dispose();
+    super.dispose();
+  }
 
-  void _showOverlay() async {  
-    if (!isOpen) {  
-      isOpen = true;  
-      controller.forward();  
-      OverlayState? overlayState = Overlay.of(context);  
-      _overlayEntry = OverlayEntry(builder: (context) => overlayContent);  
-      overlayState?.insert(_overlayEntry!);  
-    }  
-  }  
+  void _showOverlay() async {
+    if (!isOpen) {
+      isOpen = true;
+      controller.forward();
+      OverlayState? overlayState = Overlay.of(context);
+      _overlayEntry = OverlayEntry(builder: (context) => overlayContent);
+      overlayState?.insert(_overlayEntry!);
+    }
+  }
 
-  void _hideOverlay() async {  
-    if (isOpen) {  
-      isOpen = false;  
-      controller.reverse();  
-      Future.delayed(const Duration(milliseconds: 500)).then((_) {  
-        if (_overlayEntry != null) {  
-          _overlayEntry!.remove();  
-          _overlayEntry = null;  
-        }  
-      });  
-  }  
-  }  
+  void _hideOverlay() async {
+    if (isOpen) {
+      isOpen = false;
+      controller.reverse();
+      Future.delayed(const Duration(milliseconds: 500)).then((_) {
+        if (_overlayEntry != null) {
+          _overlayEntry!.remove();
+          _overlayEntry = null;
+        }
+      });
+  }
+  }
 
-  @override  
-  void initState() {  
-    super.initState();  
-    controller = AnimationController(vsync: this, duration:Duration(milliseconds: 500));  
-    overlayContent = WheelOverlayEntryContent(  
-      animationController: controller,  
-      animationConfig: sunRayLikeAnimationConfig,  
-      colors: simpleColors,  
-      innerRadius: 200,  
-      pieceHeight: 20,  
-      pieceBorderSize: 5,  
-      hideOverlay: _hideOverlay,  
-      onSelect: (Color selectedColor) {  
-        _hideOverlay();  
-        setState(() {  
-          color = selectedColor;  
-        });  
-      },  
-    );  
-  }  
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(vsync: this, duration:Duration(milliseconds: 500));
+    overlayContent = WheelOverlayEntryContent(
+      animationController: controller,
+      animationConfig: sunRayLikeAnimationConfig,
+      colors: simpleColors,
+      innerRadius: 200,
+      pieceHeight: 20,
+      pieceBorderSize: 5,
+      hideOverlay: _hideOverlay,
+      onSelect: (Color selectedColor) {
+        _hideOverlay();
+        setState(() {
+          color = selectedColor;
+        });
+      },
+    );
+  }
 
-  @override  
-  Widget build(BuildContext context) {  
-    return Container(  
-      padding: const EdgeInsets.all(150),  
-      child: Column(  
-        children:[  
-          Expanded(  
-            flex:12,  
-            child: Container(  
-              height: 500,  
-              width: 500,  
-              decoration: BoxDecoration(  
-                borderRadius: BorderRadius.circular(45),  
-                border: Border.all(  
-                  width: 15,  
-                  color: color  
-                )  
-              ),  
-            )  
-          ),  
-          const Expanded(flex:2, child: SizedBox()),  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(150),
+      child: Column(
+        children:[
           Expanded(
-            flex:2,  
-            child: MaterialButton(  
-              color: Colors.blueAccent,  
-              textColor: Colors.white,  
-              child: const Text("Click to Open"),  
-              onPressed: _showOverlay,  
-            ),  
-          ),  
-        ],  
-      )  
-    );  
-  }  
+            flex:12,
+            child: Container(
+              height: 500,
+              width: 500,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(45),
+                border: Border.all(
+                  width: 15,
+                  color: color
+                )
+              ),
+            )
+          ),
+          const Expanded(flex:2, child: SizedBox()),
+          Expanded(
+            flex:2,
+            child: MaterialButton(
+              color: Colors.blueAccent,
+              textColor: Colors.white,
+              child: const Text("Click to Open"),
+              onPressed: _showOverlay,
+            ),
+          ),
+        ],
+      )
+    );
+  }
 }
 ```
+
 
