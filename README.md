@@ -24,7 +24,7 @@ flutter_color_picker_wheel: ^0.0.1
 
 Currently this Storybook only works well on Web
 
-TODl: [] Use another storybook to provide better preview for both web
+TODO: [ ] Use another storybook to provide better preview for both web
 and phone
 
 https://flutter-color-picker-wheel.kexinlu.com
